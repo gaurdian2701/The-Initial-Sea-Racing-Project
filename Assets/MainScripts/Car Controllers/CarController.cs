@@ -14,8 +14,7 @@ namespace Car
         [SerializeField] private Rigidbody mcarRigidBody;
 
         [Header("Car Forces Properties")] 
-        [SerializeField] private AnimationCurve mtorqueCurve;
-        [SerializeField] private float mtorquePower = 1.0f;
+        [SerializeField] private float menginePower = 1.0f;
         [SerializeField] private float mbrakingPower = 1.0f;
         [SerializeField] private float mairDragConstant = 1.0f;
 
@@ -41,11 +40,6 @@ namespace Car
         private float mleftWheelSteerAngle = 0.0f;
 
         private Vector3 mdragVector = Vector3.zero;
-        
-        //If we accelerate, we go forward on the torque curve, and vice versa for deceleration. 
-        //This value captures that point on the curve.
-        private float mtorqueProgressionValue = 0.0f; 
-        private float mcurrentTorque = 0.0f;
 
         void Awake()
         {
@@ -103,10 +97,10 @@ namespace Car
         
         private void ThrottleCar()
         {
-            mrearLeftWheel.ApplyThrottleForce(mthrottleInput * mtorquePower);
-            mrearRightWheel.ApplyThrottleForce(mthrottleInput * mtorquePower);
-            mfrontLeftWheel.ApplyThrottleForce(mthrottleInput * mtorquePower);
-            mfrontRightWheel.ApplyThrottleForce(mthrottleInput * mtorquePower);
+            mrearLeftWheel.ApplyThrottleForce(mthrottleInput * menginePower);
+            mrearRightWheel.ApplyThrottleForce(mthrottleInput * menginePower);
+            mfrontLeftWheel.ApplyThrottleForce(mthrottleInput * menginePower);
+            mfrontRightWheel.ApplyThrottleForce(mthrottleInput * menginePower);
         }
 
         private void ApplyDragForces()
@@ -118,7 +112,6 @@ namespace Car
         private void Update()
         {
             SteerCar();
-            CalculateTorque();
         }
 
         private void SteerCar()
@@ -141,36 +134,6 @@ namespace Car
             mfrontLeftWheel.GetTransform().localRotation = Quaternion.AngleAxis(mleftWheelSteerAngle, Vector3.up);
             mfrontRightWheel.GetTransform().localRotation = Quaternion.AngleAxis(mrightWheelSteerAngle, Vector3.up);
         }
-
-        private void CalculateTorque()
-        {
-            //TODO: Simulate actual torque
-            //For now, values from torque curve and apply that to the car
-            
-            if (mthrottleInput > 0.0f)
-            {
-                mtorqueProgressionValue += Time.deltaTime * 0.1f;
-                mcurrentTorque = mtorqueCurve.Evaluate(mtorqueProgressionValue) * mtorquePower;
-            }
-            else if(mthrottleInput < 0.0f)
-            {
-                mtorqueProgressionValue -= Time.deltaTime * 0.1f;
-                if (Vector3.Dot(mcarRigidBody.linearVelocity, mcarRigidBody.transform.forward) > 0.1f)
-                {
-                    mcurrentTorque = mtorqueCurve.Evaluate(mtorqueProgressionValue) * mbrakingPower;
-                }
-                else
-                {
-                    mcurrentTorque = mtorqueCurve.Evaluate(mtorqueProgressionValue) * mtorquePower;
-                }
-            }
-            else
-            {
-                mtorqueProgressionValue = 0.0f;
-            }
-        }
-
-        
         void OnDrawGizmos()
         {
             Gizmos.color = Color.white;
@@ -183,8 +146,6 @@ namespace Car
             {
                 Handles.Label(mfrontRightWheel.GetTransform().position, "Steer angle: " + mrightWheelSteerAngle);
             }
-            
-            Handles.Label(transform.position, "Throttling Force: " + mthrottleInput * mcurrentTorque);
         }
     }
 }
