@@ -146,13 +146,14 @@ namespace Car
         
         private void CalculateSlidingFriction()
         {
+            //Problem: -m*v works but when we get to high speeds, even when we don't need sideways friction, we'll
+            //still have sideways forces getting applied even when we don't have to since the velocity magnitude will be high.
+            
             float slideVelocity = Vector3.Dot(mwheelVelocity, transform.right);
             float maxFriction = mgrip * mspringForce.magnitude;
-
-            //F = m * a, but we can get very small acceleration values which can result in a small default sideways slipping
-            //Therefore, we can just directly offset the velocity instead
-
-            float desiredSidewaysFriction = -mparentMass * slideVelocity;
+            
+            //F = m * a
+            float desiredSidewaysFriction = -mparentMass * slideVelocity / Time.fixedDeltaTime;
 
             desiredSidewaysFriction = Mathf.Clamp(desiredSidewaysFriction, -maxFriction, maxFriction);
             mslidingFrictionForce = desiredSidewaysFriction * transform.right;

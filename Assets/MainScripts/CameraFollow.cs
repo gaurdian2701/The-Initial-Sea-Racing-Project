@@ -19,5 +19,7 @@ public class CameraFollow : MonoBehaviour
         Vector3 followPosition = followTarget.transform.position - followTarget.transform.forward * zOffset;
         followPosition.y += yOffset;
         transform.position = Vector3.Lerp(transform.position, followPosition, mfollowResponsiveness * Time.deltaTime);
+        
+        Physics.SyncTransforms();
     }
 }
