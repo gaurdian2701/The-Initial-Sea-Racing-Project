@@ -1,7 +1,7 @@
 using System;
 using Car;
+using Bezier;
 using UnityEngine;
-
 
 public class OutOfBoundsRetriever : MonoBehaviour
 {

@@ -1,7 +1,5 @@
 using Bezier;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Overlays;
 using UnityEngine;
 using static Bezier.BezierCurve;
 
