@@ -91,7 +91,10 @@ public class BezierCurve : MonoBehaviour
             if (fDistanceAlongCurve <= B.m_fDistance)
             {
                 // blend between A & B
-                float fBlend = Mathf.InverseLerp(A.m_fDistance, B.m_fDistance, fDistanceAlongCurve);
+                //float fBlend = Mathf.InverseLerp(A.m_fDistance, B.m_fDistance, fDistanceAlongCurve);
+                
+                float localDistance = fDistanceAlongCurve - A.m_fDistance;
+                float fBlend = FindFByDistance(A, B, localDistance);
                 return new Pose
                 {
                     position = GetPosition(A, B, fBlend),
@@ -153,7 +156,7 @@ public class BezierCurve : MonoBehaviour
             Vector3 vDir1 = Vector3.Normalize(vCurr - vPrev);
             Vector3 vDir2 = Vector3.Normalize(vNext - vCurr);
             Vector3 vDir = Vector3.Normalize(vDir1 + vDir2);
-
+            
             m_points[i].m_vTangent = vDir * fAmount;
         }
     }
@@ -202,5 +205,30 @@ public class BezierCurve : MonoBehaviour
         }
 
         return fDistance;
+    }
+
+    //Added this to smooth out the traveling along points, it should no longer slow down and stop at each point anymore.
+    protected float FindFByDistance(ControlPoint A, ControlPoint B, float targetDist)
+    {
+        const int samples = 20;
+        float accumulated = 0f;
+        Vector3 last = GetPosition(A, B, 0f);
+        
+        for (int i = 1; i <= samples; ++i)
+        {
+            float f = i / (float)samples;
+            Vector3 curr = GetPosition(A, B, f);
+            float d = Vector3.Distance(last, curr);
+
+            if (accumulated + d >= targetDist)
+            {
+                float t = (targetDist - accumulated) / d;
+                return Mathf.Lerp((i - 1f) / samples, f, t);
+            }
+            accumulated += d;
+            last = curr;
+        }
+
+        return 1f;
     }
 }

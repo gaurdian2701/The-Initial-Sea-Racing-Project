@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Car;
 using UnityEngine;
-using UnityEngine.UIElements;
+
 
 public class OutOfBoundsRetriever : MonoBehaviour
 {
@@ -14,13 +12,14 @@ public class OutOfBoundsRetriever : MonoBehaviour
     [SerializeField]
     private int _amountOfCheckpoints = 1;
     [SerializeField]
-    private int _checkpointInterval = 1;
+    private float _checkpointInterval = 1;
     [SerializeField]
     private float _heightOffset = 8;
     [SerializeField] 
     private float _speed = 1.0f;
+    [SerializeField] 
+    private float _BezierTangent = 0.25f;
     private float _timer;
-    private float _startTime;
     private bool _rewind = false;
 
     private bool _areVectorsClose(Vector3 a, Vector3 b, float tolerance = 1f)
@@ -28,31 +27,16 @@ public class OutOfBoundsRetriever : MonoBehaviour
         return Vector3.Distance(a, b) <= tolerance;
     }
 
-    private float _lerpTimer = 0;
+    private float _lerpTimer;
     private float _distance;
-    private int _counter;
-    private float shitasstimer = 0;
+    private float shitasstimer;
     private bool shitassbool = true;
-    
-    public void Start()
-    {
-        
-    }
+    private CarController _carController;
 
     public void OutOfBounds()
     {
         _rewind = true;
         Debug.Log("OutOfBounds");
-        /*
-        for (int i = AmountOfCheckpoints; i < 0; i--)
-        {
-            while (TracedPath[i] != Car.transform.position)
-            {
-                Debug.Log("Rewind");
-                Car.transform.position = Vector3.Lerp(Car.transform.position, TracedPath[i], 2);
-            }
-        }
-        */
 
         Rigidbody rb = _car.GetComponent<Rigidbody>();
         
@@ -60,20 +44,17 @@ public class OutOfBoundsRetriever : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         
-        rb.constraints = RigidbodyConstraints.FreezeRotation;
         ResetRotation();
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
         
         BezierCurve.ControlPoint NewPosition = new BezierCurve.ControlPoint();
-        NewPosition.m_vPosition = new Vector3(_car.transform.position.x, _car.transform.position.y + _heightOffset, _car.transform.position.z);
-                
+        NewPosition.m_vPosition = _car.transform.position;
         _tracedPath.m_points.Add(NewPosition);
         
-        _counter = _tracedPath.Points.Count()-1;
-        //_distance = Vector3.Distance(_car.transform.position, _tracedPath.m_points[_counter].m_vPosition);
-        _startTime = Time.time;
-        
         _tracedPath.UpdateDistances();
+        _tracedPath.CalculateSmoothTangents(_BezierTangent);
         _distance = _tracedPath.TotalDistance;
+        _lerpTimer = 0;
     }
 
     private void InBounds()
@@ -87,17 +68,30 @@ public class OutOfBoundsRetriever : MonoBehaviour
 
     private void ResetRotation()
     {
-        _car.transform.rotation.SetFromToRotation(_car.transform.eulerAngles, Vector3.zero);
+        //Cant seem to find anything that works
     }
-    
+
+    private void Start()
+    {
+        _carController = _car.GetComponent<CarController>();
+    }
+
     void Update()
     {
-        
         shitasstimer += Time.deltaTime;
+        if (shitasstimer >= 4)
+        {
+            if (shitassbool)
+            {
+                shitassbool = false;
+                OutOfBounds();
+            }
+        }
+        
         if (!_rewind)
         {
             _timer += Time.deltaTime;
-            if (_timer >= _checkpointInterval)
+            if (_timer >= _checkpointInterval && _carController.IsGrounded())
             {
                 _timer = 0;
                 if (_tracedPath.m_points.Count > _amountOfCheckpoints)
@@ -110,41 +104,18 @@ public class OutOfBoundsRetriever : MonoBehaviour
                 
                 _tracedPath.m_points.Add(NewPosition);
             }
-
-            if (shitasstimer >= 4)
-            {
-                if (shitassbool)
-                {
-                    shitassbool = false;
-                    OutOfBounds();
-                }
-            }
         }
         
         else
         {
-            _lerpTimer += Time.fixedDeltaTime * _speed;
-            _distance = Mathf.Lerp(_tracedPath.TotalDistance, 0, _lerpTimer);
-            Debug.LogError("Position on Track: " + _distance);
-            //Debug.Log("Rewind");
-            _car.transform.position = _tracedPath.GetPose(_distance).position;
-            //Debug.Log(_tracedPath.GetPose(Mathf.Lerp(_tracedPath.TotalDistance, 0, Time.deltaTime * _speed)).position);
-            /*
-            float distanceCovered = (Time.time - _startTime) * _speed;
-            float fractionOfDistance = distanceCovered / _distance;
-
-            _car.transform.position = Vector3.Lerp(_car.transform.position, _tracedPath.m_points[_counter].m_vPosition, fractionOfDistance);
-            if (_areVectorsClose(_car.transform.position, _tracedPath.m_points[_counter].m_vPosition))
+            _lerpTimer += Time.deltaTime * _speed;
+            float newDistance = Mathf.Lerp(_distance, 0, _lerpTimer);
+            _car.transform.position = _tracedPath.GetPose(newDistance).position;
+            if (_areVectorsClose(_car.transform.position, _tracedPath.m_points[0].m_vPosition))
             {
-                Debug.Log("Reached Checkpoint " + _counter);
-                _counter--;
-                if (_counter < 0)
-                {
-                    Debug.Log("InBounds");
-                    InBounds();
-                }
+                Debug.Log("InBounds");
+                InBounds();
             }
-            */
         }
     }
 }

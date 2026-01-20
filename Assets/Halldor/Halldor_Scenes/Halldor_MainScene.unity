@@ -276,9 +276,10 @@ MonoBehaviour:
   _tracedPath: {fileID: 331155296}
   _car: {fileID: 331155284}
   _amountOfCheckpoints: 3
-  _checkpointInterval: 1
+  _checkpointInterval: 0.5
   _heightOffset: 8
   _speed: 0.1
+  _BezierTangent: 5
 --- !u!114 &331155296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,6 +458,10 @@ PrefabInstance:
     - target: {fileID: 4906636065763580236, guid: 7cde4f7b854187c40acde1863820ef3d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7044046910928955914, guid: 7cde4f7b854187c40acde1863820ef3d, type: 3}
+      propertyPath: menginePower
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
