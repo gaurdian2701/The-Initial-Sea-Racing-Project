@@ -6,7 +6,7 @@ using UnityEngine;
 public class OutOfBoundsRetriever : MonoBehaviour
 {
     [SerializeField]
-    private Beziers.BezierCurve _tracedPath;
+    private Bezier.BezierCurve _tracedPath;
     [SerializeField]
     private GameObject _car;
     [SerializeField]

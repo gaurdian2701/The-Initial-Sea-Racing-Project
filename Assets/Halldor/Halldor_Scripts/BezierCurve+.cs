@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Beziers
+namespace Bezier
 {
     [ExecuteInEditMode]
     public class BezierCurve : MonoBehaviour
