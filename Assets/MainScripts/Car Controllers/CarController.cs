@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 namespace Car
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class CarController : MonoBehaviour
+    public class CarController : MonoBehaviour, IFollowTarget
     {
         public bool mshowDebug = false;
 
@@ -54,8 +54,10 @@ namespace Car
                 Debug.LogError("Wheels must implement IWheel interface!");
             }
         }
-        private void Start()
+
+        public float GetVelocity()
         {
+            return mcarRigidBody.linearVelocity.magnitude;
         }
 
         public void ReceiveInput(InputAction.CallbackContext context)
