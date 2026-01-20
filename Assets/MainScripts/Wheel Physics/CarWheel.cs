@@ -8,6 +8,7 @@ namespace Car
     {
         public void ApplyThrottleForce(float someThrottleForce);
         public Transform GetTransform();
+        public bool IsGrounded();
     }
     public class CarWheel : MonoBehaviour, IWheel
     {
@@ -55,7 +56,6 @@ namespace Car
         private float mminspringLength = 0.0f;
         private float mmaxspringLength = 0.0f;
         private float mparentMass = 0.0f;
-        private float mwheelRotationStep = 0.0f;
 
         #endregion
 
@@ -80,7 +80,7 @@ namespace Car
             mwheelVelocity = mparentRigidbody.GetPointVelocity(transform.position);
             
             CalculateWheelRestingPosition();
-            // RotateWheels();
+            RotateWheels();
             CalculateRestorationForce();
             CalculateRollingFriction();
             CalculateSlidingFriction();
@@ -90,6 +90,11 @@ namespace Car
         public Transform GetTransform()
         {
             return transform;
+        }
+
+        public bool IsGrounded()
+        {
+            return misGrounded;
         }
 
         private void CalculateWheelRestingPosition()
@@ -123,9 +128,11 @@ namespace Car
         private void RotateWheels()
         {
             float rollingDirection = Mathf.Sign(Vector3.Dot(mwheelVelocity, mparentRigidbody.transform.forward)); //are we moving forwards or backwards?
-            float angularVelocity =  rollingDirection * mwheelVelocity.magnitude / (mwheelRadius * Time.fixedDeltaTime) ; //w = v/r radians per second
-            mwheelRotationStep += angularVelocity;
-            mwheelMesh.transform.Rotate(new Vector3(mwheelRotationStep, 0.0f, 0.0f), Space.Self);
+            float angularVelocity = rollingDirection * mwheelVelocity.magnitude / mwheelRadius; //w = v/r radians per second
+            float wheelRollingRotationStep = mwheelMesh.transform.localEulerAngles.x; 
+            wheelRollingRotationStep += angularVelocity;
+            mwheelMesh.transform.localEulerAngles = new Vector3(
+                wheelRollingRotationStep, mwheelMesh.transform.localEulerAngles.y, mwheelMesh.transform.localEulerAngles.z);
         }
 
         //NOTE: ISOLATE SPRING LOGIC - IT DOES NOT CARE ABOUT WHEEL POSITIONS AND OUTSIDE FORCES. ONLY IT'S OWN LENGTH
@@ -145,13 +152,14 @@ namespace Car
         
         private void CalculateSlidingFriction()
         {
+            //Problem: -m*v works but when we get to high speeds, even when we don't need sideways friction, we'll
+            //still have sideways forces getting applied even when we don't have to since the velocity magnitude will be high.
+            
             float slideVelocity = Vector3.Dot(mwheelVelocity, transform.right);
             float maxFriction = mgrip * mspringForce.magnitude;
-
-            //F = m * a, but we can get very small acceleration values which can result in a small default sideways slipping
-            //Therefore, we can just directly offset the velocity instead
-
-            float desiredSidewaysFriction = -mparentMass * slideVelocity;
+            
+            //F = m * a
+            float desiredSidewaysFriction = -mparentMass * slideVelocity / Time.fixedDeltaTime;
 
             desiredSidewaysFriction = Mathf.Clamp(desiredSidewaysFriction, -maxFriction, maxFriction);
             mslidingFrictionForce = desiredSidewaysFriction * transform.right;
