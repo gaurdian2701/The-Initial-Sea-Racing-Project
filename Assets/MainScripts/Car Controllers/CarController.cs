@@ -94,6 +94,14 @@ namespace Car
             ThrottleCar();
             ApplyDragForces();
         }
+
+        public bool IsGrounded()
+        {
+            return mfrontLeftWheel.IsGrounded() ||
+                   mfrontRightWheel.IsGrounded() ||
+                   mrearLeftWheel.IsGrounded() ||
+                   mrearRightWheel.IsGrounded();
+        }
         
         private void ThrottleCar()
         {

@@ -8,6 +8,7 @@ namespace Car
     {
         public void ApplyThrottleForce(float someThrottleForce);
         public Transform GetTransform();
+        public bool IsGrounded();
     }
     public class CarWheel : MonoBehaviour, IWheel
     {
@@ -89,6 +90,11 @@ namespace Car
         public Transform GetTransform()
         {
             return transform;
+        }
+
+        public bool IsGrounded()
+        {
+            return misGrounded;
         }
 
         private void CalculateWheelRestingPosition()
