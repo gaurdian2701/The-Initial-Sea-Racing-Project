@@ -5,15 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9d4c2c55-8d3c-47c6-ae34-123373c26c57" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.The-Initial-D-Racing-Project/.idea/indexLayout.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MainScripts/Car Controllers/CarControllerOpponentAI.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MainScripts/Car Controllers/CarControllerOpponentAI.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.The-Initial-D-Racing-Project/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.The-Initial-D-Racing-Project/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MainPrefabs/CarPrefabs/Car.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainPrefabs/CarPrefabs/Car.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Mohammed/Mohammed_Scenes/Mohammed_MainScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Mohammed/Mohammed_Scenes/Mohammed_MainScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DpaMonitoringSettings">
+    <option name="firstShow" value="false" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -28,6 +32,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Attach to Unity Editor.Attach to Unity Editor.executor": "Debug",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -70,13 +75,15 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="28524">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="28524" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
-        <list />
+        <list>
+          <MonoRuntime />
+        </list>
       </option>
       <option name="selectedOptions">
         <list />
@@ -97,7 +104,7 @@
       <updated>1768829418065</updated>
       <workItem from="1768829418713" duration="7624000" />
       <workItem from="1768903943767" duration="5815000" />
-      <workItem from="1768998977722" duration="645000" />
+      <workItem from="1768998977722" duration="2894000" />
     </task>
     <servers />
   </component>
