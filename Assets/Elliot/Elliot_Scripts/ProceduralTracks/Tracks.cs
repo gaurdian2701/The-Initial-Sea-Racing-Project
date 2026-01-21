@@ -1,8 +1,8 @@
 using Bezier;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Overlays;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static Bezier.BezierCurve;
 
 namespace ProceduralTracks
 {
@@ -15,6 +15,7 @@ namespace ProceduralTracks
 
         [SerializeField] private Vector3 m_vRoadOutlineSize = new Vector3(1.0f, 0.2f, 0.3f);
 
+        [SerializeField] public List<GameObject> m_lEdgeBoxColliders = new List<GameObject>();
 
         #region Properties
 
@@ -33,9 +34,11 @@ namespace ProceduralTracks
             List<int> trackTriangles = new List<int>();
 
             // Generate track!
+            DestroyAllEdgeBoxColliders();
             AddRoadSegment(vertices, sleeperTriangles);
             GenerateTrackOutline(m_vRoadSize.x, vertices, trackTriangles);
             GenerateTrackOutline(-m_vRoadSize.x, vertices, trackTriangles);
+            GenerateEdgeBoxColliders();
 
             // assign the mesh data
             mesh.vertices = vertices.ToArray();
@@ -59,11 +62,15 @@ namespace ProceduralTracks
             BezierCurve bc = GetComponent<BezierCurve>();
             int iSegmentCount = Mathf.CeilToInt(bc.TotalDistance / m_fTrackSegmentLength);
             int vertsPerSlice = 8;
+            bool canConnectToPrevious = true;
 
             for (int i = 0; i <= iSegmentCount; ++i)
             {
                 float fPrc = i / (float)iSegmentCount;
-                Pose pose = bc.GetPose(fPrc * bc.TotalDistance);
+                float distance = fPrc * bc.TotalDistance;
+
+                Pose pose = bc.GetPose(distance);
+                ControlPoint cp = bc.GetControlPointAtDistance(distance);
 
                 Vector3 vRight = pose.right * m_vRoadSize.x;
                 Vector3 vUp = pose.up * m_vRoadSize.y;
@@ -82,9 +89,14 @@ namespace ProceduralTracks
                     pose.position + vRight - vUp - vForward    // 7 bottom right back
                 });
 
+                if (cp != null && cp.m_bIsEdge)
+                {
+                    canConnectToPrevious = false;
+                    continue;
+                }
 
                 // add triangles
-                if (i > 0)
+                if (i > 0 && canConnectToPrevious)
                 {
                     int baseIndex = i * vertsPerSlice;
                     int prevBase = baseIndex - vertsPerSlice;
@@ -94,6 +106,7 @@ namespace ProceduralTracks
                     //AddQuad(triangles, prevBase + 1, prevBase + 2, baseIndex + 2, baseIndex + 1); // left
                     //AddQuad(triangles, prevBase + 0, prevBase + 3, baseIndex + 3, baseIndex + 0); // right
                 }
+                canConnectToPrevious = true;
             }
         }
 
@@ -103,16 +116,19 @@ namespace ProceduralTracks
 
             int iStart = vertices.Count;
             int iSegmentCount = Mathf.CeilToInt(bc.TotalDistance / m_fTrackSegmentLength);
+            bool canConnectToPrevious = true;
 
             for (int i = 0; i <= iSegmentCount; ++i)
             {
                 float fPrc = i / (float)iSegmentCount;
-                Pose pose = bc.GetPose(fPrc * bc.TotalDistance);
+                float distance = fPrc * bc.TotalDistance;
+
+                Pose pose = bc.GetPose(distance);
+                ControlPoint cp = bc.GetControlPointAtDistance(distance);
 
                 Vector3 vRight = pose.right * m_vRoadOutlineSize.x;
                 Vector3 vUp = pose.up * m_vRoadOutlineSize.y;
                 Vector3 vOffset = roadOutlineOffset * pose.right;
-
 
                 vertices.AddRange(new Vector3[]
                 {
@@ -120,22 +136,37 @@ namespace ProceduralTracks
                     pose.position + vOffset - vRight * 0.75f + vUp,   
                     pose.position + vOffset + vRight * 0.75f + vUp,   
                     pose.position + vOffset + vRight,
+
+                    pose.position + vOffset + vRight * 0.75f - vUp,
+                    pose.position + vOffset - vRight * 0.75f - vUp,
                 });
 
-                // add triangles
-                if (i < iSegmentCount)
+                if (cp != null && cp.m_bIsEdge)
                 {
-                    for (int j = 0; j < 3; ++j)
-                    {
-                        int iCurr = iStart + i * 4 + j;
+                    canConnectToPrevious = false;
+                    continue;
+                }
 
-                        triangles.AddRange(new int[]
-                        {
-                            iCurr + 0, iCurr + 4, iCurr + 1,
-                            iCurr + 1, iCurr + 4, iCurr + 5
-                        });
+                // add triangles
+                if (i < iSegmentCount && canConnectToPrevious)
+                {
+                    int curr = iStart + i * 6;
+                    int next = curr + 6;
+
+                    for (int j = 0; j < 6; j++)
+                    {
+                        int jNext = (j + 1) % 6;
+
+                        triangles.Add(curr + j);
+                        triangles.Add(next + j);
+                        triangles.Add(curr + jNext);
+
+                        triangles.Add(curr + jNext);
+                        triangles.Add(next + j);
+                        triangles.Add(next + jNext);
                     }
                 }
+                canConnectToPrevious = true;
             }
         }
 
@@ -148,6 +179,47 @@ namespace ProceduralTracks
             tris.Add(a);
             tris.Add(c);
             tris.Add(d);
+        }
+
+        private void DestroyAllEdgeBoxColliders()
+        {
+            // clean up colliders
+            foreach (GameObject boxCollider in m_lEdgeBoxColliders)
+            {
+                if (Application.isPlaying)
+                {
+                    Destroy(boxCollider);
+                }
+                else
+                {
+                    DestroyImmediate(boxCollider);
+                }
+            }
+            m_lEdgeBoxColliders.Clear();
+        }
+
+        private void GenerateEdgeBoxColliders()
+        {
+            const float multiplyXValue = 20.0f;
+            const float multiplyYValue = 100.0f;
+            BezierCurve bc = GetComponent<BezierCurve>();
+            for(int i = 0; i < bc.m_points.Count; ++i)
+            {
+                BezierCurve.ControlPoint cp = bc.m_points[i];
+                if (!cp.m_bIsEdge) continue;
+
+                ControlPoint edgedCP = bc.m_points[i - 1];
+                GameObject colliderGO = new GameObject("EdgeCollider Point ref " + i);
+                colliderGO.transform.SetParent(transform, false);
+
+                colliderGO.transform.localPosition = edgedCP.m_vPosition + Vector3.up * (multiplyYValue / 20.0f);
+                Quaternion rotation = Quaternion.LookRotation(edgedCP.m_vTangent.normalized) * Quaternion.Euler(0f, 90f, 0f);
+                colliderGO.transform.localRotation = rotation;
+
+                BoxCollider newBoxCollider = colliderGO.AddComponent<BoxCollider>();
+                newBoxCollider.size = new Vector3( m_vRoadSize.z * multiplyXValue, m_vRoadSize.y * multiplyYValue,  m_vRoadSize.x * 3.0f);
+                m_lEdgeBoxColliders.Add(colliderGO);
+            }
         }
     }
 }

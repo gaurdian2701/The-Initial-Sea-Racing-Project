@@ -1,14 +1,14 @@
 using System;
 using System.Linq;
 using Car;
+using Bezier;
 using UnityEngine;
-using Beziers;
 
 public class OutOfBoundsRetriever : MonoBehaviour
 {
     [Header("References")]
     [SerializeField]
-    private Beziers.BezierCurve _tracedPath;
+    private Bezier.BezierCurve _tracedPath;
     [SerializeField]
     private GameObject _car;
     
