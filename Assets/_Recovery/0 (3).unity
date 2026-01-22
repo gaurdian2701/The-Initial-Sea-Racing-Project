@@ -7638,7 +7638,7 @@ MonoBehaviour:
   misAIController: 0
   mcarRigidBody: {fileID: 429141611274604571}
   menginePower: 4
-  mbrakingPower: 2.49
+  mbrakingPower: 1
   mairDragConstant: 0.003
   mwheelBaseLength: 2.72
   mturnRadius: 11.5

@@ -12,7 +12,7 @@ namespace Car
         public bool mshowDebug = false;
         public bool misAIController = false;
         
-        [SerializeField] private Rigidbody mcarRigidBody;
+        [SerializeField] protected Rigidbody mcarRigidBody;
 
         [Header("Car Forces Properties")] 
         [SerializeField] private float menginePower = 4.0f;
@@ -25,15 +25,15 @@ namespace Car
         [SerializeField] private float mrearTrackLength = 1.6f;
         
         [Header("Car Wheels")]
-        [SerializeField] private GameObject mfrontLeftWheelObject;
-        [SerializeField] private GameObject mfrontRightWheelObject;
-        [SerializeField] private GameObject mrearLeftWheelObject;
-        [SerializeField] private GameObject mrearRightWheelObject;
+        [SerializeField] protected GameObject mfrontLeftWheelObject;
+        [SerializeField] protected GameObject mfrontRightWheelObject;
+        [SerializeField] protected GameObject mrearLeftWheelObject;
+        [SerializeField] protected GameObject mrearRightWheelObject;
 
-        private IWheel mfrontLeftWheel;
-        private IWheel mfrontRightWheel;
-        private IWheel mrearLeftWheel;
-        private IWheel mrearRightWheel;
+        protected IWheel mfrontLeftWheel;
+        protected IWheel mfrontRightWheel;
+        protected IWheel mrearLeftWheel;
+        protected IWheel mrearRightWheel;
         
         //Use these variables to control the car
         protected float msteerInput = 0.0f; // steer the car X
@@ -124,8 +124,8 @@ namespace Car
         {
             mrearLeftWheel.ApplyThrottleForce(mthrottleInput * menginePower);
             mrearRightWheel.ApplyThrottleForce(mthrottleInput * menginePower);
-            mfrontLeftWheel.ApplyThrottleForce(mthrottleInput * menginePower);
-            mfrontRightWheel.ApplyThrottleForce(mthrottleInput * menginePower);
+            // mfrontLeftWheel.ApplyThrottleForce(mthrottleInput * menginePower);
+            // mfrontRightWheel.ApplyThrottleForce(mthrottleInput * menginePower);
         }
 
         private void ApplyDragForces()
