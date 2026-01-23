@@ -9,7 +9,7 @@
       <change beforePath="$PROJECT_DIR$/Assets/InputSystem_Actions.inputactions" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/InputSystem_Actions.inputactions" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Kiran/Kiran_Scenes/Kiran_MainScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Kiran/Kiran_Scenes/Kiran_MainScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Kiran/Kiran_Scripts/ArcadeyCarController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Kiran/Kiran_Scripts/ArcadeyCarController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MainPrefabs/CarPrefabs/Car.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainPrefabs/CarPrefabs/Car.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/Car Controllers/CarController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/Car Controllers/CarController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
