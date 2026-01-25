@@ -5,13 +5,22 @@ namespace Car
 {
     public class ArcadeyCarController : CarController
     {
+        [Header("Movement Values")]
         [SerializeField] private float mgripDuringLateralMovement = 1.0f;
         [SerializeField] private float mgripDuringSidewaysMovement = 2.0f;
+
+        [Header("Drifting Values")] 
+        [SerializeField] private float mfrontWheelGripDuringDrift = 3.5f;
         [SerializeField] private float mrearWheelGripDuringDrift = 1.25f;
-        [SerializeField] private float mmaxSidewaysForceDuringDrift = 16.6f;
-        [SerializeField] private float mvelocityThresholdForCounterSpinningForce = 1.0f;
+        [SerializeField] private float mmaxSidewaysForceDuringDrift = 10.0f;
+        [SerializeField][Range(0.0f, 1.0f)] private float mslideVelocityDampingConstant = 0.5f;
         
         private bool mdriftInitiated = false;
+        
+        private float mcurrentFrameDriftVelocity = 0.0f;
+        private float mpreviousFrameDriftVelocity = 0.0f;
+
+        
         protected override void Update()
         {
             base.Update();
@@ -29,7 +38,7 @@ namespace Car
             
             if (mdriftInitiated)
             {
-                MaintainSteerWhileDrifting();
+                DampenSpinWhileDrifting();
             }
         }
 
@@ -56,32 +65,31 @@ namespace Car
 
         private void UpdateWheelValuesOnDrift()
         {
+            mfrontLeftWheel.SetGrip(mfrontWheelGripDuringDrift);
+            mfrontRightWheel.SetGrip(mfrontWheelGripDuringDrift);
+            
             mrearLeftWheel.SetGrip(mrearWheelGripDuringDrift);
             mrearRightWheel.SetGrip(mrearWheelGripDuringDrift);
         }
-
-        private void MaintainSteerWhileDrifting()
+        
+        private void DampenSpinWhileDrifting()
         {
-            float sidewaysVelocityOnRearRightWheel = Vector3.Dot(
-                mcarRigidBody.GetPointVelocity(mrearRightWheel.GetTransform().position),
-                mrearRightWheel.GetTransform().right);
-            
-            float sidewaysVelocityOnRearLeftWheel = Vector3.Dot(
-                mcarRigidBody.GetPointVelocity(mrearLeftWheel.GetTransform().position),
-                mrearLeftWheel.GetTransform().right);
+            DampenSpinOnWheel(ref mrearLeftWheel);
+            DampenSpinOnWheel(ref mrearRightWheel);
+        }
 
-            if (sidewaysVelocityOnRearRightWheel > mmaxSidewaysForceDuringDrift - mvelocityThresholdForCounterSpinningForce ||
-                sidewaysVelocityOnRearRightWheel < -(mmaxSidewaysForceDuringDrift - mvelocityThresholdForCounterSpinningForce))
+        private void DampenSpinOnWheel(ref IWheel someWheel)
+        {
+            mcurrentFrameDriftVelocity = Vector3.Dot(mcarRigidBody.GetPointVelocity(someWheel.GetTransform().position),
+                someWheel.GetTransform().right);
+
+            if (mcurrentFrameDriftVelocity > mmaxSidewaysForceDuringDrift || mcurrentFrameDriftVelocity < -mmaxSidewaysForceDuringDrift)
             {
-                mcarRigidBody.AddForceAtPosition(-sidewaysVelocityOnRearRightWheel
-                                                 * mrearRightWheel.GetTransform().right, mrearRightWheel.GetTransform().position, ForceMode.Acceleration);
-            }
-            
-            if (sidewaysVelocityOnRearLeftWheel > mmaxSidewaysForceDuringDrift - mvelocityThresholdForCounterSpinningForce ||
-                sidewaysVelocityOnRearLeftWheel < -(mmaxSidewaysForceDuringDrift - mvelocityThresholdForCounterSpinningForce))
-            {
-                mcarRigidBody.AddForceAtPosition(-sidewaysVelocityOnRearLeftWheel
-                                                 * mrearLeftWheel.GetTransform().right, mrearLeftWheel.GetTransform().position, ForceMode.Acceleration);
+                float velocityChange = mmaxSidewaysForceDuringDrift - mcurrentFrameDriftVelocity;
+                float restorationForce = mslideVelocityDampingConstant * velocityChange;
+
+                Vector3 forceToBeApplied = restorationForce * mcarRigidBody.transform.right;
+                mcarRigidBody.AddForceAtPosition(forceToBeApplied, someWheel.GetTransform().position);
             }
         }
 
@@ -100,16 +108,7 @@ namespace Car
 
         void OnDrawGizmos()
         {
-            if (mshowDebug)
-            {
-                Gizmos.color = Color.maroon;
-                Vector3 sidewaysForceOnRightWheel = Vector3.Dot(mcarRigidBody.GetPointVelocity(mrearRightWheel.GetTransform().position),
-                    mrearRightWheel.GetTransform().right) * mrearRightWheel.GetTransform().right;
-                Gizmos.DrawLine(mrearRightWheel.GetTransform().position, mrearRightWheel.GetTransform().position + sidewaysForceOnRightWheel * 2.0f);
-                Vector3 sidewaysForceOnLeftWheel = Vector3.Dot(mcarRigidBody.GetPointVelocity(mrearLeftWheel.GetTransform().position),
-                    mrearLeftWheel.GetTransform().right) * mrearLeftWheel.GetTransform().right;
-                Gizmos.DrawLine(mrearLeftWheel.GetTransform().position, mrearLeftWheel.GetTransform().position + sidewaysForceOnLeftWheel * 2.0f);
-            }
+
         }
     }
 }

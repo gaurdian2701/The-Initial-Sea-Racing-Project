@@ -8298,15 +8298,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 613436788767617744, guid: 2b3871a76f65e0542b88f1a3c04efbb4, type: 3}
       propertyPath: mshowWheelDebug
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 822478481508646557, guid: 2b3871a76f65e0542b88f1a3c04efbb4, type: 3}
       propertyPath: mshowWheelDebug
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1355582631960050236, guid: 2b3871a76f65e0542b88f1a3c04efbb4, type: 3}
       propertyPath: mshowWheelDebug
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2030352717994173200, guid: 2b3871a76f65e0542b88f1a3c04efbb4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8350,7 +8350,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3939576168896194601, guid: 2b3871a76f65e0542b88f1a3c04efbb4, type: 3}
       propertyPath: mshowDebug
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3939576168896194601, guid: 2b3871a76f65e0542b88f1a3c04efbb4, type: 3}
       propertyPath: menginePower
@@ -8366,15 +8366,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3939576168896194601, guid: 2b3871a76f65e0542b88f1a3c04efbb4, type: 3}
       propertyPath: mrearWheelGripDuringDrift
-      value: 0.8
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3939576168896194601, guid: 2b3871a76f65e0542b88f1a3c04efbb4, type: 3}
+      propertyPath: mfrontWheelGripDuringDrift
+      value: 2.3
       objectReference: {fileID: 0}
     - target: {fileID: 3939576168896194601, guid: 2b3871a76f65e0542b88f1a3c04efbb4, type: 3}
       propertyPath: mmaxSidewaysForceDuringDrift
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3939576168896194601, guid: 2b3871a76f65e0542b88f1a3c04efbb4, type: 3}
+      propertyPath: mslideVelocitySpringConstant
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3939576168896194601, guid: 2b3871a76f65e0542b88f1a3c04efbb4, type: 3}
+      propertyPath: mslideVelocityDampingConstant
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3939576168896194601, guid: 2b3871a76f65e0542b88f1a3c04efbb4, type: 3}
+      propertyPath: mrestingSlideVelocityWhileDrifting
       value: 16.6
       objectReference: {fileID: 0}
     - target: {fileID: 4941017818647414110, guid: 2b3871a76f65e0542b88f1a3c04efbb4, type: 3}
       propertyPath: mshowWheelDebug
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6963785626280271770, guid: 2b3871a76f65e0542b88f1a3c04efbb4, type: 3}
       propertyPath: m_Name
