@@ -13,8 +13,8 @@ public class DynamicSpeedLines : MonoBehaviour
     private float _maxSpeed = 47;
     private float _minSpeedforParticles = 30;
     private int _maxParticles = 100;
-    private int _minParticleSpeed = 15;
-    private int _maxParticleSpeed = 50;
+    private int _minParticleSpeed = 30;
+    private int _maxParticleSpeed = 70;
     private float _speedPoint;
     
     private void Start()
