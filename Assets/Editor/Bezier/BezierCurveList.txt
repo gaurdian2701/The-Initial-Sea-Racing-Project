@@ -1,0 +1,113 @@
+Points In Bezier Curve
+Element 0
+  V Position : X = 25 , Y = 0 , Z = 0
+  V Tangent  : X = 5 , Y = 0 , Z = 0
+  F Distance : 0
+Element 1
+  V Position : X = 250 , Y = 0 , Z = 0
+  V Tangent  : X = 5 , Y = 0 , Z = 0
+  F Distance : 225
+Element 2
+  V Position : X = 350 , Y = 0 , Z = 0
+  V Tangent  : X = 100 , Y = 0 , Z = 0
+  F Distance : 325
+Element 3
+  V Position : X = 300 , Y = 0 , Z = -150
+  V Tangent  : X = -100 , Y = 0 , Z = -50
+  F Distance : 559.1577
+Element 4
+  V Position : X = 200 , Y = 0 , Z = -200
+  V Tangent  : X = 0 , Y = 0 , Z = 0
+  F Distance : 670.9611
+Element 5
+  V Position : X = 0 , Y = 0 , Z = -300
+  V Tangent  : X = -100 , Y = 0 , Z = -50
+  F Distance : 894.5679
+Element 6
+  V Position : X = -100 , Y = 0 , Z = -350
+  V Tangent  : X = -100 , Y = 0 , Z = -50
+  F Distance : 1006.371
+Element 7
+  V Position : X = -25 , Y = 0 , Z = -500
+  V Tangent  : X = 100 , Y = 0 , Z = 50
+  F Distance : 1272.045
+Element 8
+  V Position : X = 75 , Y = 0 , Z = -450
+  V Tangent  : X = 100 , Y = 0 , Z = 50
+  F Distance : 1383.848
+Element 9
+  V Position : X = 275 , Y = 0 , Z = -350
+  V Tangent  : X = 100 , Y = 0 , Z = 50
+  F Distance : 1607.455
+Element 10
+  V Position : X = 575 , Y = 0 , Z = -200
+  V Tangent  : X = 100 , Y = 0 , Z = 50
+  F Distance : 1942.865
+Element 11
+  V Position : X = 775 , Y = 0 , Z = -100
+  V Tangent  : X = 100 , Y = 0 , Z = 50
+  F Distance : 2166.472
+Element 12
+  V Position : X = 850 , Y = 0 , Z = -200
+  V Tangent  : X = -75 , Y = 0 , Z = -50
+  F Distance : 2382.524
+Element 13
+  V Position : X = 750 , Y = 0 , Z = -350
+  V Tangent  : X = 50 , Y = 0 , Z = -50
+  F Distance : 2590.261
+Element 14
+  V Position : X = 900 , Y = 0 , Z = -300
+  V Tangent  : X = 50 , Y = 0 , Z = 50
+  F Distance : 2770.559
+Element 15
+  V Position : X = 950 , Y = 0 , Z = -175
+  V Tangent  : X = 25 , Y = 0 , Z = 50
+  F Distance : 2908.021
+Element 16
+  V Position : X = 1025 , Y = 0 , Z = -175
+  V Tangent  : X = 25 , Y = 0 , Z = -50
+  F Distance : 3018.886
+Element 17
+  V Position : X = 1000 , Y = 0 , Z = -400
+  V Tangent  : X = -100 , Y = 0 , Z = -50
+  F Distance : 3273.146
+Element 18
+  V Position : X = 750 , Y = 0 , Z = -450
+  V Tangent  : X = -50 , Y = 0 , Z = 50
+  F Distance : 3542.505
+Element 19
+  V Position : X = 600 , Y = 0 , Z = -300
+  V Tangent  : X = -100 , Y = 0 , Z = -50
+  F Distance : 3785.754
+Element 20
+  V Position : X = 450 , Y = 0 , Z = -375
+  V Tangent  : X = -100 , Y = 0 , Z = -50
+  F Distance : 3953.459
+Element 21
+  V Position : X = 100 , Y = 0 , Z = -550
+  V Tangent  : X = -100 , Y = 0 , Z = -50
+  F Distance : 4344.771
+Element 22
+  V Position : X = -50 , Y = 0 , Z = -625
+  V Tangent  : X = -100 , Y = 0 , Z = -50
+  F Distance : 4512.476
+Element 23
+  V Position : X = -244.6 , Y = 0 , Z = -549.42
+  V Tangent  : X = -50 , Y = 0 , Z = 100
+  F Distance : 4758.678
+Element 24
+  V Position : X = -200 , Y = 0 , Z = -275
+  V Tangent  : X = 100 , Y = 0 , Z = 50
+  F Distance : 5069.106
+Element 25
+  V Position : X = -250 , Y = 0 , Z = -150
+  V Tangent  : X = -100 , Y = 0 , Z = -50
+  F Distance : 5309.105
+Element 26
+  V Position : X = -250 , Y = 0 , Z = 0
+  V Tangent  : X = 100 , Y = 0 , Z = 0
+  F Distance : 5561.275
+Element 27
+  V Position : X = -100 , Y = 0 , Z = 0
+  V Tangent  : X = 5 , Y = 0 , Z = 0
+  F Distance : 5711.275

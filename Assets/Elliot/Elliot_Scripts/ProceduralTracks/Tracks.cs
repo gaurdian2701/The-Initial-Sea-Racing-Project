@@ -21,7 +21,7 @@ namespace ProceduralTracks
         #region Properties
 
         [Header("Track Settings")]
-        [SerializeField, Range(0.1f, 5.0f)] private float m_fTrackSegmentLength = 4.0f;
+        [SerializeField, Range(0.1f, 25.0f)] private float m_fTrackSegmentLength = 4.0f;
         [SerializeField] private Vector2 m_vRoadOutlineSize = new Vector2(1.0f, 0.2f);
         [SerializeField] private Vector3 m_vFinishLineSize = new Vector3(1.0f, 0.2f, 0.3f);
 

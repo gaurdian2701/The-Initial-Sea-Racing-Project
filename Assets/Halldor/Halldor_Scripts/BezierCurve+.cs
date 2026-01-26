@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 namespace Bezier
 {
@@ -286,6 +287,26 @@ namespace Bezier
             }
 
             return m_points.Count - 1;
+        }
+
+
+        public void GenerateBezierCurveListFile()
+        {
+            var fileName = "Assets/Editor/Bezier/BezierCurveList.txt";
+            if (m_points.Count < 1) return; 
+            if (File.Exists(fileName)) { File.Delete(fileName); }
+
+            var sr = File.CreateText(fileName);
+            sr.WriteLine("Points In Bezier Curve");
+            for (int i = 0; i < m_points.Count; i++)
+            {
+                ControlPoint TheControlPoint = m_points[i];
+                sr.WriteLine("Element {0}", i);
+                sr.WriteLine("  V Position : X = {0} , Y = {1} , Z = {2}", TheControlPoint.m_vPosition.x, TheControlPoint.m_vPosition.y, TheControlPoint.m_vPosition.z);
+                sr.WriteLine("  V Tangent  : X = {0} , Y = {1} , Z = {2}", TheControlPoint.m_vTangent.x, TheControlPoint.m_vTangent.y, TheControlPoint.m_vTangent.z);
+                sr.WriteLine("  F Distance : {0}", TheControlPoint.m_fDistance);
+            }
+            sr.Close();
         }
     }
 }
