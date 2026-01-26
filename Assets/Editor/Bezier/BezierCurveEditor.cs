@@ -1,5 +1,6 @@
-using UnityEngine;
+using ProceduralTracks;
 using UnityEditor;
+using UnityEngine;
 
 namespace Bezier
 {
@@ -40,6 +41,12 @@ namespace Bezier
 
             GUILayout.Space(10);
             DebugWeights();
+
+            GUILayout.Space(20);
+            if (GUILayout.Button("Generate BezierCurveList File"))
+            {
+                bc.GenerateBezierCurveListFile();
+            }
         }
 
         private void OnSceneGUI()
