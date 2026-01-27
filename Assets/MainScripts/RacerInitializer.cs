@@ -35,12 +35,21 @@ public class RacerInitializer : MonoBehaviour
         carController.mbrakingPower =  carStats.brakingPower;
         carController.mturnRadius  = carStats.turnRadius;
 
-        playerCar.GetComponentInChildren<RacerMinimapIcon>().ChangeIconMaterial(_racerDataHolder.selectedRacer.minimapIconMaterial);
+        RacerIdentityTracker playerIdentity = playerCar.GetComponentInChildren<RacerIdentityTracker>();
+        playerIdentity.ChangeIconMaterial(_racerDataHolder.selectedRacer.minimapIconMaterial);
+        playerIdentity.racerData =  _racerDataHolder.selectedRacer;
         
+        RaceProgress raceProgress = new RaceProgress();
+
+        raceProgress.racer = _racerDataHolder.selectedRacer;
+        
+        ProgressTracking.Instance.racersProgress.Add(raceProgress);
+            
         if (Camera.main != null)
         {
             CameraFollow cameraFollow = Camera.main.GetComponent<CameraFollow>();
             cameraFollow.mfollowTarget = playerCar;
+            cameraFollow.Startup();
             Camera.main.GetComponent<DynamicSpeedLines>()._carRB = playerCar.GetComponent<Rigidbody>();   
         }
         else Debug.LogError("No Camera is tagged as the main camera.");
@@ -56,7 +65,7 @@ public class RacerInitializer : MonoBehaviour
             i++;
         }
         
-        
+        ProgressTracking.Instance.UpdateLeaderboard();
         raceCountDown.StartCountDown();
     }
 }
