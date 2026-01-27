@@ -5,14 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9d4c2c55-8d3c-47c6-ae34-123373c26c57" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.The-Initial-D-Racing-Project/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.The-Initial-D-Racing-Project/.idea/projectSettingsUpdater.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.The-Initial-D-Racing-Project/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.The-Initial-D-Racing-Project/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Kiran/Kiran_Scenes/Kiran_MainScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Kiran/Kiran_Scenes/Kiran_MainScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/CameraFollow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/CameraFollow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/Car Controllers/CarController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/Car Controllers/CarController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/Wheel Physics/CarWheel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/Wheel Physics/CarWheel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MainPrefabs/CarPrefabs/Car Moenisegg.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainPrefabs/CarPrefabs/Car Moenisegg.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MainPrefabs/CarPrefabs/Car.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainPrefabs/CarPrefabs/Car.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/Forg.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/Forg.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/JimmyNitro.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/JimmyNitro.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/Joe.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/Joe.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/JohnRacing.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/JohnRacing.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/JumpMan.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/JumpMan.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +22,10 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Kiran/Kiran_Scripts/ArcadeyCarController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@02433b2481ab/InputSystem/Utilities/DelegateHelpers.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -30,20 +34,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "CarPhysics-Kiran",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;CarPhysics-Kiran&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Unity.exe" />
@@ -111,6 +115,14 @@
       <updated>1768829418065</updated>
       <workItem from="1768829418713" duration="7624000" />
       <workItem from="1768903943767" duration="5815000" />
+      <workItem from="1768988230485" duration="3000" />
+      <workItem from="1768988239541" duration="1821000" />
+      <workItem from="1768990845299" duration="9587000" />
+      <workItem from="1769089139539" duration="4985000" />
+      <workItem from="1769108074453" duration="5117000" />
+      <workItem from="1769162589537" duration="13957000" />
+      <workItem from="1769337495108" duration="7297000" />
+      <workItem from="1769507228620" duration="2941000" />
     </task>
     <servers />
   </component>
@@ -126,23 +138,5 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
-          <properties exception="System.OperationCanceledException" breakIfHandledByOtherCode="false" displayValue="System.OperationCanceledException" />
-          <option name="timeStamp" value="1" />
-        </breakpoint>
-        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
-          <properties exception="System.Threading.Tasks.TaskCanceledException" breakIfHandledByOtherCode="false" displayValue="System.Threading.Tasks.TaskCanceledException" />
-          <option name="timeStamp" value="2" />
-        </breakpoint>
-        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
-          <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
-          <option name="timeStamp" value="3" />
-        </breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
