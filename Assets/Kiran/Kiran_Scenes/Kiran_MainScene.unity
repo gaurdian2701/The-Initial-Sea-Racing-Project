@@ -5406,42 +5406,6 @@ PrefabInstance:
       propertyPath: mfollowTarget
       value: 
       objectReference: {fileID: 2092438609}
-    - target: {fileID: 1250100887434040374, guid: dd6a89bfa207aab4fbff9fba2adbdac2, type: 3}
-      propertyPath: mfovCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1250100887434040374, guid: dd6a89bfa207aab4fbff9fba2adbdac2, type: 3}
-      propertyPath: mfovCurve.m_Curve.Array.data[1].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1250100887434040374, guid: dd6a89bfa207aab4fbff9fba2adbdac2, type: 3}
-      propertyPath: mfovCurve.m_Curve.Array.data[1].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1250100887434040374, guid: dd6a89bfa207aab4fbff9fba2adbdac2, type: 3}
-      propertyPath: mfovCurve.m_Curve.Array.data[0].inSlope
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1250100887434040374, guid: dd6a89bfa207aab4fbff9fba2adbdac2, type: 3}
-      propertyPath: mfovCurve.m_Curve.Array.data[1].inSlope
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1250100887434040374, guid: dd6a89bfa207aab4fbff9fba2adbdac2, type: 3}
-      propertyPath: mfovCurve.m_Curve.Array.data[0].outSlope
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1250100887434040374, guid: dd6a89bfa207aab4fbff9fba2adbdac2, type: 3}
-      propertyPath: mfovCurve.m_Curve.Array.data[1].outSlope
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1250100887434040374, guid: dd6a89bfa207aab4fbff9fba2adbdac2, type: 3}
-      propertyPath: mfovCurve.m_Curve.Array.data[0].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
-    - target: {fileID: 1250100887434040374, guid: dd6a89bfa207aab4fbff9fba2adbdac2, type: 3}
-      propertyPath: mfovCurve.m_Curve.Array.data[1].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
     - target: {fileID: 8261526226781448114, guid: dd6a89bfa207aab4fbff9fba2adbdac2, type: 3}
       propertyPath: m_Name
       value: Game Camera
@@ -8299,7 +8263,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3939576168896194601, guid: 2b3871a76f65e0542b88f1a3c04efbb4, type: 3}
       propertyPath: mslideVelocityDampingConstant
-      value: 0.5
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 3939576168896194601, guid: 2b3871a76f65e0542b88f1a3c04efbb4, type: 3}
       propertyPath: mrestingSlideVelocityWhileDrifting

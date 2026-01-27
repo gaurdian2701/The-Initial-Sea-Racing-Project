@@ -10,11 +10,11 @@ public class DynamicSpeedLines : MonoBehaviour
     [SerializeField]
     private ParticleSystem _speedLines;
     public Rigidbody _carRB;
-    private float _maxSpeed = 66;
+    private float _maxSpeed = 47;
     private float _minSpeedforParticles = 30;
     private int _maxParticles = 100;
-    private int _minParticleSpeed = 30;
-    private int _maxParticleSpeed = 70;
+    private int _minParticleSpeed = 40;
+    private int _maxParticleSpeed = 100;
     private float _speedPoint;
     
   
