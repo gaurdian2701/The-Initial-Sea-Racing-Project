@@ -65,7 +65,7 @@ public class RacerInitializer : MonoBehaviour
             i++;
         }
         
-        
+        ProgressTracking.Instance.UpdateLeaderboard();
         raceCountDown.StartCountDown();
     }
 }

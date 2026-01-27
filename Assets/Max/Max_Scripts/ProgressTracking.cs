@@ -13,7 +13,7 @@ public class ProgressTracking : MonoBehaviour
     }
 
     [SerializeField] private int numberOfLaps;
-    
+    [SerializeField] Leaderboard leaderboard;
     
     private Tracks tracks;
     
@@ -38,7 +38,9 @@ public class ProgressTracking : MonoBehaviour
         }
 
         checkpoints[^1].isFinishLine = true;
-
+        
+        
+        
     }
 
 
@@ -49,7 +51,7 @@ public class ProgressTracking : MonoBehaviour
             if (racer.racer.racerId == toRacer.racerId)
             {
                 racer.checkpointsCompleted++;
-                Debug.Log(toRacer.racerName + " scored a point and is now at: " + racer.checkpointsCompleted );
+                UpdateLeaderboard();
             }
         }
         
@@ -74,7 +76,7 @@ public class ProgressTracking : MonoBehaviour
             if (racer.racer.racerId == toRacer.racerId)
             {
                 racer.lapsCompleted++;
-                Debug.Log(toRacer.racerName + " scored a lap and is now at: " + racer.lapsCompleted);
+                
                 if (racer.lapsCompleted >= numberOfLaps)
                 {
                     EndRace(racer.racer);
@@ -83,6 +85,7 @@ public class ProgressTracking : MonoBehaviour
                 racer.checkpointsCompleted = 0;
                 
                 UnbanIdAtEveryCheckpoint(racer.racer.racerId);
+                UpdateLeaderboard();
             }
         }
     }
@@ -99,7 +102,50 @@ public class ProgressTracking : MonoBehaviour
             checkpoint.UnbanID(idToUnban);
         }
     }
-    
+
+    public void UpdateLeaderboard()
+    {
+        Debug.Log("UpdateLeaderboard");
+        foreach (var racer in racersProgress)
+        {
+            racer.pointScore = racer.checkpointsCompleted + racer.lapsCompleted * 100;
+        }
+
+        RaceProgress first = racersProgress[0];
+        RaceProgress second = racersProgress[1];
+        RaceProgress third = racersProgress[2];
+
+        foreach (var racer in racersProgress)
+        {
+            if (racer.pointScore > first.pointScore)
+            {
+                first =  racer;                
+            }
+        }
+
+        foreach (var racer in racersProgress)
+        {
+            if (racer.racer.racerId == first.racer.racerId) racer.pointScore = -100;
+            
+            if (racer.pointScore > second.pointScore)
+            {
+                second =  racer;                
+            }
+        }
+        
+        foreach (var racer in racersProgress)
+        {
+            if (racer.racer.racerId == first.racer.racerId || racer.racer.racerId == second.racer.racerId) racer.pointScore = -100;
+            
+            if (racer.pointScore > third.pointScore)
+            {
+                third =  racer;                
+            }
+        }
+        
+        leaderboard.UpdateStandings(first.racer, second.racer, third.racer);
+        
+    }
 }
 
 
@@ -110,4 +156,5 @@ public class RaceProgress
     public RacerData racer;
     public int checkpointsCompleted;
     public int lapsCompleted;
+    public int pointScore;
 }

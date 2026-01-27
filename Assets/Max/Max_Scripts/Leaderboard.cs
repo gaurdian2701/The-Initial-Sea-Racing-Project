@@ -15,6 +15,7 @@ public class Leaderboard : MonoBehaviour
     
     public void UpdateStandings(RacerData first, RacerData second, RacerData third)
     {
+        Debug.Log("UpdateStandings");
         firstName.text = first.racerName;
         secondName.text = second.racerName;
         thirdName.text = third.racerName;
