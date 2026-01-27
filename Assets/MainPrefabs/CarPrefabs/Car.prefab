@@ -218,7 +218,7 @@ MonoBehaviour:
   mfrontWheelGripDuringDrift: 3.5
   mrearWheelGripDuringDrift: 1
   mmaxSidewaysForceDuringDrift: 10
-  mslideVelocityDampingConstant: 0.3
+  mslideVelocityDampingConstant: 0.2
 --- !u!64 &7190821506759501900
 MeshCollider:
   m_ObjectHideFlags: 0
