@@ -667,7 +667,7 @@ namespace ProceduralTracks
 
             BoxCollider newBoxCollider = finishLinePrefab.AddComponent<BoxCollider>();
             newBoxCollider.center = new Vector3(0.0f, pole_L.transform.localPosition.y, 0.0f);
-            newBoxCollider.size = new Vector3(cp.m_vRoadSize.z * multiplyXValue, cp.m_vRoadSize.y * multiplyYValue, cp.m_vRoadSize.x * 2.0f);
+            newBoxCollider.size = new Vector3(cp.m_vRoadSize.z * multiplyXValue, cp.m_vRoadSize.y * multiplyYValue, cp.m_vRoadSize.x * 2.0f + m_vRoadOutlineSize.x * 2.0f);
             newBoxCollider.isTrigger = true;
             m_gFinishLineGameObject = finishLinePrefab;
         }
@@ -719,7 +719,7 @@ namespace ProceduralTracks
                 colliderGO.transform.localRotation = rotation;
 
                 BoxCollider newBoxCollider = colliderGO.AddComponent<BoxCollider>();
-                newBoxCollider.size = new Vector3(checkPointCP.m_vRoadSize.z * multiplyXValue, checkPointCP.m_vRoadSize.y * multiplyYValue, checkPointCP.m_vRoadSize.x * 2.0f);
+                newBoxCollider.size = new Vector3(checkPointCP.m_vRoadSize.z * multiplyXValue, checkPointCP.m_vRoadSize.y * multiplyYValue, checkPointCP.m_vRoadSize.x * 2.0f + m_vRoadOutlineSize.x * 2.0f);
                 newBoxCollider.isTrigger = true;
                 m_lRacingCheckPoints.Add(colliderGO);
             }
