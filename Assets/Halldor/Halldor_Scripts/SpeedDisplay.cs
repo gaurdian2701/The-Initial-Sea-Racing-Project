@@ -9,6 +9,6 @@ public class SpeedDisplay : MonoBehaviour
     private TMP_Text _speedText;
     void Update()
     {
-        _speedText.text = _carRB.linearVelocity.magnitude.ToString();
+        _speedText.text = Mathf.RoundToInt(_carRB.linearVelocity.magnitude * 50f) +  " km/h";
     }
 }
