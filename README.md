@@ -1,2 +1,2 @@
-# The-Initial-D-Racing-Project
+# The-Initial-Sea-Racing-Project
 Repository for the Car Game Assignment as part of our Futuregames education
