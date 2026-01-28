@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using ProceduralTracks;
 
 namespace Bezier
 {
@@ -12,6 +13,7 @@ namespace Bezier
         {
             public Vector3 m_vPosition;
             public Vector3 m_vTangent;
+            public Quaternion m_qRotation;
             public Vector3 m_vRoadSize = new Vector3(7.0f, 0.2f, 0.3f);
             public float m_fDistance;
             public bool m_bIsEdge;
@@ -196,6 +198,7 @@ namespace Bezier
                 m_fTotalDistance += CalculateDistance(LastPoint, m_closedPoint);
                 m_closedPoint.m_fDistance = m_fTotalDistance;
                 m_closedPoint.m_vRoadSize = LastPoint.m_vRoadSize;
+                m_closedPoint.m_qRotation = FirstPoint.m_qRotation;
             }
         }
 
@@ -288,6 +291,66 @@ namespace Bezier
 
             return m_points.Count - 1;
         }
+
+        public Vector3 GetForwardAtDistance(Vector3 refObjectPos)
+        {
+            if (TotalDistance <= 0f)
+            {
+                return transform != null ? transform.forward : Vector3.forward;
+            }
+
+            Tracks TracksGO = FindAnyObjectByType<Tracks>();
+            int coarseSamples = Mathf.Clamp(Mathf.CeilToInt(TotalDistance / Mathf.Max(0.0001f, TracksGO.TrackSegmentLength)) * 5, 32, 1024);
+
+            float bestDistanceAlong = 0f;
+            float bestSqr = float.MaxValue;
+
+            for (int i = 0; i <= coarseSamples; i++)
+            {
+                float t = i / (float)coarseSamples;
+                float d = t * TotalDistance;
+                Pose p = GetPose(d);
+                float sq = (p.position - refObjectPos).sqrMagnitude;
+                if (sq < bestSqr)
+                {
+                    bestSqr = sq;
+                    bestDistanceAlong = d;
+                }
+            }
+
+            float localWindow = Mathf.Max(0.01f, TotalDistance / coarseSamples);
+            const int refinementPasses = 4;
+            const int localSamples = 16;
+
+            for (int pass = 0; pass < refinementPasses; pass++)
+            {
+                float start = Mathf.Max(0f, bestDistanceAlong - localWindow);
+                float end = Mathf.Min(TotalDistance, bestDistanceAlong + localWindow);
+                float bestLocalSqr = bestSqr;
+                float bestLocalDist = bestDistanceAlong;
+
+                for (int j = 0; j <= localSamples; j++)
+                {
+                    float tt = j / (float)localSamples;
+                    float d = Mathf.Lerp(start, end, tt);
+                    Pose p = GetPose(d);
+                    float sq = (p.position - refObjectPos).sqrMagnitude;
+                    if (sq < bestLocalSqr)
+                    {
+                        bestLocalSqr = sq;
+                        bestLocalDist = d;
+                    }
+                }
+
+                bestSqr = bestLocalSqr;
+                bestDistanceAlong = bestLocalDist;
+                localWindow = Mathf.Max(0.0001f, (end - start) * 0.5f);
+            }
+
+            Pose finalPose = GetPose(bestDistanceAlong);
+            return finalPose.forward;
+        }
+
 
 
         public void GenerateBezierCurveListFile()
