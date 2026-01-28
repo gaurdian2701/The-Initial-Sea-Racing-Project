@@ -15,6 +15,9 @@ namespace Car
         [SerializeField] private float mmaxSidewaysForceDuringDrift = 10.0f;
         [SerializeField][Range(0.0f, 0.2f)] private float mslideVelocityDampingConstant = 0.15f;
         
+        public delegate void OnDrift(bool isDrifting);
+        public event OnDrift onDrift;
+        
         public bool mdriftInitiated = false;
         
         private float mcurrentFrameDriftVelocity = 0.0f;
@@ -101,17 +104,19 @@ namespace Car
             if (context.performed)
             {
                 mdriftInitiated = true;
+                onDrift?.Invoke(mdriftInitiated);
             }
 
             if (context.canceled)
             {
                 mdriftInitiated = false;
+                onDrift?.Invoke(mdriftInitiated);
             }
         }
 
         void OnDrawGizmos()
         {
-
+            
         }
     }
 }
