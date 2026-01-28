@@ -15,7 +15,7 @@ namespace Car
         [SerializeField] private float mmaxSidewaysForceDuringDrift = 10.0f;
         [SerializeField][Range(0.0f, 0.2f)] private float mslideVelocityDampingConstant = 0.15f;
         
-        private bool mdriftInitiated = false;
+        public bool mdriftInitiated = false;
         
         private float mcurrentFrameDriftVelocity = 0.0f;
         private float mpreviousFrameDriftVelocity = 0.0f;
