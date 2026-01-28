@@ -12,12 +12,13 @@ namespace Car
         [Header("Drifting Values")] 
         [SerializeField] private float mfrontWheelGripDuringDrift = 3.5f;
         [SerializeField] private float mrearWheelGripDuringDrift = 1.25f;
-        [SerializeField] private float mmaxSidewaysForceDuringDrift = 10.0f;
+        [SerializeField] private float mfrontWheelAdditionalVelocityDuringDrift = 5.0f;
         [SerializeField][Range(0.0f, 0.2f)] private float mslideVelocityDampingConstant = 0.15f;
+        [SerializeField] [Range(0.0f, 30.0f)] private float mdampingLimit = 5.0f;
         
         public bool mdriftInitiated = false;
         
-        private float mcurrentFrameDriftVelocity = 0.0f;
+        private float currentSlidingVelocity = 0.0f;
         private float mpreviousFrameDriftVelocity = 0.0f;
 
         
@@ -39,6 +40,7 @@ namespace Car
             if (mdriftInitiated)
             {
                 DampenSpinWhileDrifting();
+                AddFrontalWheelVelocity();
             }
         }
 
@@ -78,22 +80,25 @@ namespace Car
             DampenSpinOnWheel(ref mrearRightWheel);
         }
 
+        private void AddFrontalWheelVelocity()
+        {
+            mcarRigidBody.AddForceAtPosition(mfrontLeftWheel.GetTransform().forward * mfrontWheelAdditionalVelocityDuringDrift,
+                mfrontLeftWheel.GetTransform().position);
+            mcarRigidBody.AddForceAtPosition(mfrontRightWheel.GetTransform().forward * mfrontWheelAdditionalVelocityDuringDrift,
+                mfrontRightWheel.GetTransform().position);
+        }
+
         private void DampenSpinOnWheel(ref IWheel someWheel)
         {
-            mcurrentFrameDriftVelocity = Vector3.Dot(mcarRigidBody.GetPointVelocity(someWheel.GetTransform().position),
+            currentSlidingVelocity = Vector3.Dot(mcarRigidBody.GetPointVelocity(someWheel.GetTransform().position),
                 someWheel.GetTransform().right);
             
-            Debug.Log($"CURRENT FRAME VELOCITY: {mcurrentFrameDriftVelocity}");
-            Debug.Log($"MAX VELOCITY: {mmaxSidewaysForceDuringDrift}");
+            float velocityChange = Mathf.Abs(currentSlidingVelocity);
+            float restorationForce = mslideVelocityDampingConstant * velocityChange;
+            restorationForce = Mathf.Clamp(restorationForce, -mdampingLimit, mdampingLimit);
 
-            if (Mathf.Abs(mcurrentFrameDriftVelocity) > mmaxSidewaysForceDuringDrift)
-            {
-                float velocityChange = Mathf.Abs(mcurrentFrameDriftVelocity) - mmaxSidewaysForceDuringDrift;
-                float restorationForce = mslideVelocityDampingConstant * velocityChange;
-
-                Vector3 forceToBeApplied = -Mathf.Sign(mcurrentFrameDriftVelocity) * restorationForce * mcarRigidBody.transform.right;
-                mcarRigidBody.AddForceAtPosition(forceToBeApplied, someWheel.GetTransform().position);
-            }
+            Vector3 forceToBeApplied = -Mathf.Sign(currentSlidingVelocity) * restorationForce * mcarRigidBody.transform.right;
+            mcarRigidBody.AddForceAtPosition(forceToBeApplied, someWheel.GetTransform().position);
         }
 
         public void ReceiveDriftInput(InputAction.CallbackContext context)
