@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 7190821506759501900}
   - component: {fileID: 5657749876140755595}
   - component: {fileID: 5202799554182429005}
+  - component: {fileID: 3667259346465037386}
   m_Layer: 0
   m_Name: Car
-  m_TagString: Untagged
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41,6 +42,8 @@ Transform:
   - {fileID: 579100333652733166}
   - {fileID: 1273560220663883855}
   - {fileID: 2770766556951598819}
+  - {fileID: 6089428141716248326}
+  - {fileID: 8012259577338216133}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &429141612883122382
@@ -203,8 +206,8 @@ MonoBehaviour:
   mshowDebug: 0
   misAIController: 0
   mcarRigidBody: {fileID: 429141612883122382}
-  menginePower: 4
-  mbrakingPower: 1
+  menginePower: 2
+  mbrakingPower: 3
   mairDragConstant: 0.003
   mwheelBaseLength: 2.72
   mturnRadius: 11.5
@@ -215,10 +218,11 @@ MonoBehaviour:
   mrearRightWheelObject: {fileID: 3204218200158260358}
   mgripDuringLateralMovement: 1
   mgripDuringSidewaysMovement: 2
-  mfrontWheelGripDuringDrift: 3.5
+  mfrontWheelGripDuringDrift: 3
   mrearWheelGripDuringDrift: 1
-  mmaxSidewaysForceDuringDrift: 10
-  mslideVelocityDampingConstant: 0.2
+  mmaxSidewaysForceDuringDrift: 0
+  mslideVelocityDampingConstant: 0.117
+  mdriftInitiated: 0
 --- !u!64 &7190821506759501900
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -255,7 +259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OutOfBoundsRetriever
   _tracedPath: {fileID: 5202799554182429005}
   _car: {fileID: 4079921147483252166}
-  _amountOfCheckpoints: 3
+  _amountOfCheckpoints: 4
   _checkpointInterval: 0.5
   _heightOffset: 8
   _speed: 0.3
@@ -276,6 +280,22 @@ MonoBehaviour:
   m_points: []
   m_bIsClosed: 0
   m_bWantEditorGizmos: 0
+--- !u!114 &3667259346465037386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4079921147483252166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3447b9e6e0eaeb94e821c2ce495cfd7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DriftSmoke
+  _carController: {fileID: 7968753593607590517}
+  _driftSmokeA: {fileID: 5290942704991861048}
+  _driftSmokeB: {fileID: 8276922704226898171}
+  _carRigidBody: {fileID: 429141612883122382}
 --- !u!1 &6906880746283957079
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,6 +399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f703472b6361ac4fb436be461197236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  racerData: {fileID: 0}
 --- !u!1 &6928545961730026598
 GameObject:
   m_ObjectHideFlags: 0
@@ -584,6 +605,77 @@ Transform:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9194128835059114912, guid: 18eeec9d99821dd46877b550ca8d8b70, type: 3}
   m_PrefabInstance: {fileID: 2024282658409469157}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4861658919791145371
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4906636065763580236}
+    m_Modifications:
+    - target: {fileID: 726523594124380323, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.0000014603136
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -2.1032063e-12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.0000015199182
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -180
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9131386081512077951, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_Name
+      value: DriftSmokeA
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+--- !u!198 &5290942704991861048 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 726523594124380323, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+  m_PrefabInstance: {fileID: 4861658919791145371}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6089428141716248326 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+  m_PrefabInstance: {fileID: 4861658919791145371}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5353171259621043079
 PrefabInstance:
@@ -937,4 +1029,75 @@ Transform:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9194128835059114912, guid: 18eeec9d99821dd46877b550ca8d8b70, type: 3}
   m_PrefabInstance: {fileID: 6048246404992315174}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8703391018222229592
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4906636065763580236}
+    m_Modifications:
+    - target: {fileID: 726523594124380323, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.0000014603136
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -2.1032063e-12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.0000015199182
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -180
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9131386081512077951, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+      propertyPath: m_Name
+      value: DriftSmokeB
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+--- !u!4 &8012259577338216133 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1727671031293879965, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+  m_PrefabInstance: {fileID: 8703391018222229592}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8276922704226898171 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 726523594124380323, guid: 77f875836fd618a4795cc187f1cecbb6, type: 3}
+  m_PrefabInstance: {fileID: 8703391018222229592}
   m_PrefabAsset: {fileID: 0}

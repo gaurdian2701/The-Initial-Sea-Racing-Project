@@ -6,13 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="9d4c2c55-8d3c-47c6-ae34-123373c26c57" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.The-Initial-D-Racing-Project/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.The-Initial-D-Racing-Project/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MainPrefabs/CarPrefabs/Car Moenisegg.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainPrefabs/CarPrefabs/Car Moenisegg.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/MainPrefabs/CarPrefabs/Car.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainPrefabs/CarPrefabs/Car.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/Forg.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/Forg.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/JimmyNitro.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/JimmyNitro.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/Joe.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/Joe.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/JohnRacing.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/JohnRacing.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/JumpMan.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/SO/Racers/JumpMan.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/Car Controllers/CarController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/Car Controllers/CarController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/Car Controllers/CarControllerOpponentAI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/Car Controllers/CarControllerOpponentAI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mohammed/Mohammed_Prefabs/Car_OpponentAI.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Mohammed/Mohammed_Prefabs/Car_OpponentAI.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Mohammed/Mohammed_Scenes/Mohammed_MainScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Mohammed/Mohammed_Scenes/Mohammed_MainScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +39,7 @@
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;CarPhysics-Kiran&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -50,7 +50,7 @@
 }</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="E:\Unity\6000.3.2f1-x86_64\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath C:\Users\gaurd\Desktop\kiran_cs\Projects\Unity\The-Initial-D-Racing-Project -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\gaurd\Desktop\kiran_cs\Projects\Unity\The-Initial-D-Racing-Project" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -62,7 +62,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="E:\Unity\6000.3.2f1-x86_64\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath C:\Users\gaurd\Desktop\kiran_cs\Projects\Unity\The-Initial-D-Racing-Project -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\gaurd\Desktop\kiran_cs\Projects\Unity\The-Initial-D-Racing-Project" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -123,6 +123,8 @@
       <workItem from="1769162589537" duration="13957000" />
       <workItem from="1769337495108" duration="7297000" />
       <workItem from="1769507228620" duration="2941000" />
+      <workItem from="1769519532327" duration="13860000" />
+      <workItem from="1769590899320" duration="1000" />
     </task>
     <servers />
   </component>
