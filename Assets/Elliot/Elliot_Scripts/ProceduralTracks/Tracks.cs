@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static Bezier.BezierCurve;
+using static UnityEditor.FilePathAttribute;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 namespace ProceduralTracks
@@ -24,6 +25,7 @@ namespace ProceduralTracks
         [SerializeField, Range(0.1f, 25.0f)] private float m_fTrackSegmentLength = 4.0f;
         [SerializeField] private Vector2 m_vRoadOutlineSize = new Vector2(1.0f, 0.2f);
         [SerializeField] private Vector3 m_vFinishLineSize = new Vector3(1.0f, 0.2f, 0.3f);
+        [SerializeField] private bool m_bEnableRotationToRoad = false;
 
         [Header("Railing Settings")]
         [SerializeField] private bool m_bEnableRailing = true;
@@ -31,6 +33,9 @@ namespace ProceduralTracks
         [SerializeField, ShowIf("m_bEnableRailing")] private Vector2 m_vRailingBarrierSize = new Vector2(0.1f, 0.15f);
         [SerializeField, ShowIf("m_bEnableRailing")] private float m_fRailingAngleStep = 5f;
         [SerializeField, ShowIf("m_bEnableRailing")] private Vector3 tangentThreshold = new Vector3(5.0f, 0.01f, 5.0f);
+        [SerializeField, ShowIf("m_bEnableRailing")] private Material m_mRailingPolesMAT;
+        [SerializeField, ShowIf("m_bEnableRailing")] private Material m_mRailingBarrierMAT;
+
         private List<Vector3List> m_railingBarrierPosesList = new List<Vector3List>();
 
         [Header("Gameplay Objects")]
@@ -38,6 +43,9 @@ namespace ProceduralTracks
         [SerializeField] public List<GameObject> m_lRacingCheckPoints = new List<GameObject>();
         [SerializeField] public GameObject m_gFinishLinePrefab;
         [SerializeField] public GameObject m_gFinishLineGameObject;
+        [SerializeField] public GameObject m_gRailing_R;
+        [SerializeField] public GameObject m_gRailing_L;
+
 
         #endregion
 
@@ -48,27 +56,21 @@ namespace ProceduralTracks
             mesh.name = "Tracks";
 
             List<Vector3> vertices = new List<Vector3>();
+
             List<int> trackTriangles = new List<int>();
             List<int> outlineTrackTriangles = new List<int>();
-            List<int> railingTriangles = new List<int>();
-            List<int> railingBarrierTriangles = new List<int>();
             List<int> FinishLineTriangles = new List<int>();
             List<Vector2> uvs = new List<Vector2>();
 
             // Generate track!
             DestroyAllEdgeBoxColliders();
             DestroyRaceCheckPoints();
+            ClearRailingObjects();
             m_railingBarrierPosesList.Clear();
             AddRoadSegment(vertices, uvs, trackTriangles);
             GenerateTrackOutline(true, vertices, uvs, outlineTrackTriangles);
             GenerateTrackOutline(false, vertices, uvs, outlineTrackTriangles);
-            if(m_bEnableRailing)
-            {
-                GeneratePolesRailing(true, vertices, uvs, railingTriangles);
-                GeneratePolesRailing(false, vertices, uvs, railingTriangles);
-                GenerateRailingBarrier(vertices, uvs, railingBarrierTriangles);
-                GenerateRailingBarrier(vertices, uvs, railingBarrierTriangles);
-            }
+            if(m_bEnableRailing) CreateRailingMesh();
             GenerateFinishLine(vertices, uvs, FinishLineTriangles);
             GenerateEdgeBoxColliders();
             GenerateRaceCheckPoints();
@@ -77,12 +79,10 @@ namespace ProceduralTracks
             mesh.vertices = vertices.ToArray();
             mesh.uv = uvs.ToArray();
 
-            mesh.subMeshCount = 5;
+            mesh.subMeshCount = 3;
             mesh.SetTriangles(trackTriangles.ToArray(), 0);
             mesh.SetTriangles(outlineTrackTriangles.ToArray(), 1);
-            mesh.SetTriangles(railingTriangles.ToArray(), 2);
-            mesh.SetTriangles(railingBarrierTriangles.ToArray(), 3);
-            mesh.SetTriangles(FinishLineTriangles.ToArray(), 4);
+            mesh.SetTriangles(FinishLineTriangles.ToArray(), 2);
 
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
@@ -94,12 +94,135 @@ namespace ProceduralTracks
             return mesh;
         }
 
+        void ClearRailingObjects()
+        {
+            Transform RailingTransform_R = transform.Find("Railing_R");
+            if (RailingTransform_R != null)
+            {
+                GameObject railing = RailingTransform_R.gameObject;
+                if (railing != null)
+                {
+                    if (Application.isPlaying)
+                    {
+                        Destroy(railing);
+                    }
+                    else
+                    {
+                        DestroyImmediate(railing);
+                    }
+                }
+            }
+
+            Transform RailingTransform_L = transform.Find("Railing_L");
+            if (RailingTransform_L != null)
+            {
+                GameObject railing = RailingTransform_L.gameObject;
+                if (railing != null)
+                {
+                    if (Application.isPlaying)
+                    {
+                        Destroy(railing);
+                    }
+                    else
+                    {
+                        DestroyImmediate(railing);
+                    }
+                }
+            }
+        }
+
+        protected void CreateRailingMesh()
+        {
+            #region RightRailing
+            GameObject railing_R = new GameObject("Railing_R");
+            railing_R.transform.SetParent(transform, false);
+            railing_R.AddComponent<MeshFilter>();
+            railing_R.AddComponent<MeshRenderer>();
+            railing_R.AddComponent<MeshCollider>();
+
+            List<Vector3> verticesRailing_R = new List<Vector3>();
+            List<int> railingTriangles_R = new List<int>();
+            List<int> railingBarrierTriangles_R = new List<int>();
+
+            Mesh meshRailing_R = new Mesh();
+            meshRailing_R.hideFlags = HideFlags.DontSave;
+            meshRailing_R.name = "Railing_R";
+
+            GeneratePolesRailing(true, verticesRailing_R, railingTriangles_R);
+            GenerateRailingBarrier(verticesRailing_R, railingBarrierTriangles_R);
+            meshRailing_R.vertices = verticesRailing_R.ToArray();
+
+            meshRailing_R.subMeshCount = 2;
+            meshRailing_R.SetTriangles(railingTriangles_R.ToArray(), 0);
+            meshRailing_R.SetTriangles(railingBarrierTriangles_R.ToArray(), 1);
+            meshRailing_R.RecalculateNormals();
+            meshRailing_R.RecalculateBounds();
+
+            railing_R.GetComponent<MeshFilter>().mesh = meshRailing_R;
+            if (railing_R.GetComponent<MeshCollider>() != null)
+            {
+                railing_R.GetComponent<MeshCollider>().sharedMesh = meshRailing_R;
+            }
+
+            // Use sharedMaterials to avoid material instantiation in edit mode.
+            var mrR = railing_R.GetComponent<MeshRenderer>();
+            mrR.sharedMaterials = new Material[] { m_mRailingPolesMAT, m_mRailingBarrierMAT };
+
+            m_gRailing_R = railing_R;
+
+            #endregion
+
+            m_railingBarrierPosesList.Clear();
+
+            #region LeftRailing
+            GameObject railing_L = new GameObject("Railing_L");
+            railing_L.transform.SetParent(transform, false);
+            railing_L.AddComponent<MeshFilter>();
+            railing_L.AddComponent<MeshRenderer>();
+            railing_L.AddComponent<MeshCollider>();
+
+            List<Vector3> verticesRailing_L = new List<Vector3>();
+            List<int> railingTriangles_L = new List<int>();
+            List<int> railingBarrierTriangles_L = new List<int>();
+
+            Mesh meshRailing_L = new Mesh();
+            meshRailing_L.hideFlags = HideFlags.DontSave;
+            meshRailing_L.name = "Railing_L";
+
+            GeneratePolesRailing(false, verticesRailing_L, railingTriangles_L);
+            GenerateRailingBarrier(verticesRailing_L, railingBarrierTriangles_L);
+            meshRailing_L.vertices = verticesRailing_L.ToArray();
+
+            meshRailing_L.subMeshCount = 2;
+            meshRailing_L.SetTriangles(railingTriangles_L.ToArray(), 0);
+            meshRailing_L.SetTriangles(railingBarrierTriangles_L.ToArray(), 1);
+            meshRailing_L.RecalculateNormals();
+            meshRailing_L.RecalculateBounds();
+
+            railing_L.GetComponent<MeshFilter>().mesh = meshRailing_L;
+            if (railing_L.GetComponent<MeshCollider>() != null)
+            {
+                railing_L.GetComponent<MeshCollider>().sharedMesh = meshRailing_L;
+            }
+
+            // Use sharedMaterials to avoid material instantiation in edit mode.
+            var mrL = railing_L.GetComponent<MeshRenderer>();
+            mrL.sharedMaterials = new Material[] { m_mRailingPolesMAT, m_mRailingBarrierMAT };
+
+            m_gRailing_L = railing_L;
+            #endregion
+        }
+
         protected void AddRoadSegment(List<Vector3> vertices, List<Vector2> uvs, List<int> triangles)
         {
             BezierCurve bc = GetComponent<BezierCurve>();
+            if (bc == null) return;
+
             int iSegmentCount = Mathf.CeilToInt(bc.TotalDistance / m_fTrackSegmentLength);
             int vertsPerSlice = 8;
             bool canConnectToPrevious = true;
+
+            if (iSegmentCount <= 0) iSegmentCount = 1;
 
             for (int i = 0; i <= iSegmentCount; ++i)
             {
@@ -107,18 +230,45 @@ namespace ProceduralTracks
                 float distance = fPrc * bc.TotalDistance;
 
                 Pose pose = bc.GetPose(distance);
-                ControlPoint ControlPointA, ControlPointB;
 
-                // determine segment CPs
-                int cpIndex = bc.GetControlPointIndexAtDistance(distance);
-                ControlPointA = bc.m_points[cpIndex];
-                ControlPointB = (cpIndex + 1 < bc.m_points.Count) ? bc.m_points[cpIndex + 1] : ControlPointA;
+                int cpIndex = Mathf.Clamp(bc.GetControlPointIndexAtDistance(distance), 0, Mathf.Max(0, bc.m_points.Count - 1));
+                BezierCurve.ControlPoint ControlPointA = bc.m_points[cpIndex];
+                BezierCurve.ControlPoint ControlPointB = (cpIndex + 1 < bc.m_points.Count) ? bc.m_points[cpIndex + 1] : ControlPointA;
 
                 Vector3 roadSize = GetRoadSizeBetween(ControlPointA, ControlPointB, distance);
 
-                Vector3 vRight = pose.right * roadSize.x;
-                Vector3 vUp = pose.up * roadSize.y;
-                Vector3 vForward = pose.forward * roadSize.z;
+                Vector3 vRight;
+                Vector3 vUp;
+                Vector3 vForward;
+
+                if(m_bEnableRotationToRoad) // derive world-space axes from final rotation and scale by road sizes
+                {
+                    Quaternion cpRotA = (ControlPointA != null) ? ControlPointA.m_qRotation : Quaternion.identity;
+                    Quaternion cpRotB = (ControlPointB != null) ? ControlPointB.m_qRotation : Quaternion.identity;
+                    float rotT = 0f;
+                    if (ControlPointA != null && ControlPointB != null && !Mathf.Approximately(ControlPointA.m_fDistance, ControlPointB.m_fDistance))
+                    {
+                        rotT = Mathf.InverseLerp(ControlPointA.m_fDistance, ControlPointB.m_fDistance, distance);
+                    }
+                    else if (ControlPointA != null)
+                    {
+                        rotT = 0f;
+                        cpRotB = cpRotA;
+                    }
+
+                    Quaternion interpolatedCpRot = Quaternion.Slerp(cpRotA, cpRotB, rotT);
+                    Quaternion finalRotation = pose.rotation * interpolatedCpRot;
+
+                    vRight = finalRotation * Vector3.right * roadSize.x;
+                    vUp = finalRotation * Vector3.up * roadSize.y;
+                    vForward = finalRotation * Vector3.forward * roadSize.z;
+                }
+                else
+                {
+                    vRight = pose.right * roadSize.x;
+                    vUp = pose.up * roadSize.y;
+                    vForward = pose.forward * roadSize.z;
+                }
 
                 Vector3[] slices = new Vector3[]
                 {
@@ -133,29 +283,36 @@ namespace ProceduralTracks
                     pose.position + vRight - vUp - vForward    // 7 bottom right back
                 };
 
+                // Append vertices and placeholder UVs
+                int sliceStartIndex = vertices.Count;
                 vertices.AddRange(slices);
-                for(int j = 0; j < slices.Length; j++)
+                for (int j = 0; j < slices.Length; j++)
                 {
                     uvs.Add(Vector2.zero);
                 }
 
+                // If this control point marks an edge, break continuity and skip connecting triangles
                 if (ControlPointA != null && ControlPointA.m_bIsEdge)
                 {
                     canConnectToPrevious = false;
                     continue;
                 }
 
-                // add triangles
+                // add triangles connecting to previous slice when allowed
                 if (i > 0 && canConnectToPrevious)
                 {
-                    int baseIndex = i * vertsPerSlice;
-                    int prevBase = baseIndex - vertsPerSlice;
+                    int currBase = sliceStartIndex;
+                    int prevBase = currBase - vertsPerSlice;
 
-                    AddQuad(triangles, prevBase + 0, prevBase + 1, baseIndex + 1, baseIndex + 0); // top
-                    AddQuad(triangles, prevBase + 2, prevBase + 3, baseIndex + 3, baseIndex + 2); // bottom
-                    //AddQuad(triangles, prevBase + 1, prevBase + 2, baseIndex + 2, baseIndex + 1); // left
-                    //AddQuad(triangles, prevBase + 0, prevBase + 3, baseIndex + 3, baseIndex + 0); // right
+                    if (prevBase >= 0 && currBase + vertsPerSlice - 1 < vertices.Count)
+                    {
+                        // top quad
+                        AddQuad(triangles, prevBase + 0, prevBase + 1, currBase + 1, currBase + 0);
+                        // bottom quad
+                        AddQuad(triangles, prevBase + 2, prevBase + 3, currBase + 3, currBase + 2);
+                    }
                 }
+
                 canConnectToPrevious = true;
             }
         }
@@ -175,20 +332,47 @@ namespace ProceduralTracks
 
                 Pose pose = bc.GetPose(distance);
 
-                Vector3 vRight = pose.right * m_vRoadOutlineSize.x;
-                Vector3 vUp = pose.up * m_vRoadOutlineSize.y;
-
                 ControlPoint ControlPointA, ControlPointB;
 
-                // determine segment CPs
                 int cpIndex = bc.GetControlPointIndexAtDistance(distance);
                 ControlPointA = bc.m_points[cpIndex];
                 ControlPointB = (cpIndex + 1 < bc.m_points.Count) ? bc.m_points[cpIndex + 1] : ControlPointA;
 
                 Vector3 roadSize = GetRoadSizeBetween(ControlPointA, ControlPointB, distance);
 
+                Vector3 rightDir;
+                Vector3 upDir;
+                if (m_bEnableRotationToRoad)
+                {
+                    Quaternion cpRotA = (ControlPointA != null) ? ControlPointA.m_qRotation : Quaternion.identity;
+                    Quaternion cpRotB = (ControlPointB != null) ? ControlPointB.m_qRotation : Quaternion.identity;
+                    float rotT = 0f;
+                    if (ControlPointA != null && ControlPointB != null && !Mathf.Approximately(ControlPointA.m_fDistance, ControlPointB.m_fDistance))
+                    {
+                        rotT = Mathf.InverseLerp(ControlPointA.m_fDistance, ControlPointB.m_fDistance, distance);
+                    }
+                    else if (ControlPointA != null)
+                    {
+                        rotT = 0f;
+                        cpRotB = cpRotA;
+                    }
+                    Quaternion interpolatedCpRot = Quaternion.Slerp(cpRotA, cpRotB, rotT);
+                    Quaternion finalRotation = pose.rotation * interpolatedCpRot;
+
+                    rightDir = (finalRotation * Vector3.right).normalized;
+                    upDir = (finalRotation * Vector3.up).normalized;
+                }
+                else
+                {
+                    rightDir = pose.right;
+                    upDir = pose.up;
+                }
+
+                Vector3 vRight = rightDir * m_vRoadOutlineSize.x;
+                Vector3 vUp = upDir * m_vRoadOutlineSize.y;
+
                 float roadOutlineOffset = isRightHandSide ? roadSize.x : -roadSize.x;
-                Vector3 vOffset = roadOutlineOffset * pose.right;
+                Vector3 vOffset = roadOutlineOffset * rightDir;
 
                 Vector3[] slices = new Vector3[]
                 {
@@ -237,7 +421,7 @@ namespace ProceduralTracks
             }
         }
 
-        protected void GeneratePolesRailing(bool isRightHandSide, List<Vector3> vertices, List<Vector2> uvs, List<int> triangles)
+        protected void GeneratePolesRailing(bool isRightHandSide, List<Vector3> vertices, List<int> triangles)
         {
             BezierCurve bc = GetComponent<BezierCurve>();
             int iSegmentCount = Mathf.CeilToInt(bc.TotalDistance / m_fTrackSegmentLength);
@@ -307,9 +491,40 @@ namespace ProceduralTracks
                             continue; // skip first pole to break continuity
                         }
 
+                        Vector3 rightDir;
+                        Vector3 upDir;
+                        if (m_bEnableRotationToRoad)
+                        {
+                            Quaternion cpRotA = (ControlPointA != null) ? ControlPointA.m_qRotation : Quaternion.identity;
+                            Quaternion cpRotB = (ControlPointB != null) ? ControlPointB.m_qRotation : Quaternion.identity;
+                            float rotT = 0f;
+                            if (ControlPointA != null && ControlPointB != null && !Mathf.Approximately(ControlPointA.m_fDistance, ControlPointB.m_fDistance))
+                            {
+                                rotT = Mathf.InverseLerp(ControlPointA.m_fDistance, ControlPointB.m_fDistance, distance);
+                            }
+                            else if (ControlPointA != null)
+                            {
+                                rotT = 0f;
+                                cpRotB = cpRotA;
+                            }
+                            Quaternion interpolatedCpRot = Quaternion.Slerp(cpRotA, cpRotB, rotT);
+                            Quaternion finalRotation = pose.rotation * interpolatedCpRot;
+
+                            // Use finalRotation to derive the frame so outline follows CP rotations
+                            rightDir = (finalRotation * Vector3.right).normalized;
+                            upDir = (finalRotation * Vector3.up).normalized;
+                        }
+                        else
+                        {
+                            rightDir = pose.right;
+                            upDir = pose.up;
+                        }
+
                         Vector3 roadSize = GetRoadSizeBetween(ControlPointA, ControlPointB, distance);
                         float roadOutlineOffset = isRightHandSide ? roadSize.x : -roadSize.x;
-                        Vector3 polePosition = pose.position + pose.right * roadOutlineOffset;
+                        Vector3 vOffset = roadOutlineOffset * rightDir;
+
+                        Vector3 polePosition = pose.position + vOffset;
 
                         if (!inGroup)
                         {
@@ -317,7 +532,7 @@ namespace ProceduralTracks
                             inGroup = true;
                         }
 
-                        AddCylinderPole(vertices, uvs, triangles, polePosition, inGroup);
+                        AddCylinderPole(vertices, triangles, polePosition, inGroup);
                         currentGroup.points.Add(polePosition);
                         accumulatedAngle = 0f;
                     }
@@ -330,7 +545,7 @@ namespace ProceduralTracks
             }
         }
 
-        protected void AddCylinderPole(List<Vector3> vertices, List<Vector2> uvs, List<int> triangles, Vector3 position, bool shouldEnableTriangles)
+        protected void AddCylinderPole(List<Vector3> vertices, List<int> triangles, Vector3 position, bool shouldEnableTriangles)
         {
             int startIndex = vertices.Count;
             const int poleSides = 8;
@@ -344,8 +559,6 @@ namespace ProceduralTracks
 
                 vertices.Add(position + new Vector3(x, 0f, z));
                 vertices.Add(position + new Vector3(x, m_vRailingPoleSize.y, z));
-                uvs.Add(Vector2.zero);
-                uvs.Add(Vector2.zero);
             }
 
             if (!shouldEnableTriangles) return;
@@ -368,7 +581,7 @@ namespace ProceduralTracks
             }
         }
 
-        protected void GenerateRailingBarrier(List<Vector3> vertices, List<Vector2> uvs, List<int> triangles)
+        protected void GenerateRailingBarrier(List<Vector3> vertices, List<int> triangles)
         {
             const float EPS = 1e-6f;
             const float MAX_CONNECT_DISTANCE = 50.0f; // threshold to avoid creating giant triangles
@@ -450,11 +663,6 @@ namespace ProceduralTracks
 
                     int currSectionStart = vertices.Count;
                     vertices.AddRange(slices);
-
-                    for (int j = 0; j < slices.Length; j++)
-                    {
-                        uvs.Add(Vector2.zero);
-                    }
 
                     groupSectionCount++;
 
@@ -642,6 +850,23 @@ namespace ProceduralTracks
             const float multiplyYValue = 80.0f;
             BezierCurve.ControlPoint cp = bc.m_points[0];
 
+            Transform parentTransform = transform.Find("FinishLine");
+            if (parentTransform != null)
+            {
+                GameObject finishLine = parentTransform.gameObject;
+                if (finishLine != null)
+                {
+                    if (Application.isPlaying)
+                    {
+                        Destroy(finishLine);
+                    }
+                    else
+                    {
+                        DestroyImmediate(finishLine);
+                    }
+                }
+            }
+
             GameObject finishLinePrefab = Instantiate(m_gFinishLinePrefab);
             finishLinePrefab.name = "FinishLine";
 
@@ -649,7 +874,12 @@ namespace ProceduralTracks
 
             finishLinePrefab.transform.localPosition = cp.m_vPosition;
             Quaternion rotation = Quaternion.LookRotation(cp.m_vTangent.normalized) * Quaternion.Euler(0f, 90f, 0f);
-            finishLinePrefab.transform.localRotation = rotation;
+            if (m_bEnableRotationToRoad)
+            {
+                Quaternion newConstructedQuat = new Quaternion(-cp.m_qRotation.z, cp.m_qRotation.y, cp.m_qRotation.x, cp.m_qRotation.w);
+                finishLinePrefab.transform.localRotation = rotation * newConstructedQuat;
+            }
+            else finishLinePrefab.transform.localRotation = rotation;
 
             GameObject pole_L = finishLinePrefab.transform.Find("Pole_L").gameObject;
             Vector3 poleLPos_L = pole_L.transform.localPosition;
@@ -730,7 +960,13 @@ namespace ProceduralTracks
 
                 colliderGO.transform.localPosition = checkPointCP.m_vPosition + Vector3.up * (multiplyYValue / 12.0f);
                 Quaternion rotation = Quaternion.LookRotation(checkPointCP.m_vTangent.normalized) * Quaternion.Euler(0f, 90f, 0f);
-                colliderGO.transform.localRotation = rotation;
+                if (m_bEnableRotationToRoad)
+                {
+                    Quaternion newConstructedQuat = new Quaternion(-checkPointCP.m_qRotation.z, checkPointCP.m_qRotation.y, checkPointCP.m_qRotation.x, checkPointCP.m_qRotation.w);
+                    colliderGO.transform.localRotation = rotation * newConstructedQuat;
+                }
+                else colliderGO.transform.localRotation = rotation;
+
 
                 BoxCollider newBoxCollider = colliderGO.AddComponent<BoxCollider>();
                 newBoxCollider.size = new Vector3(checkPointCP.m_vRoadSize.z * multiplyXValue, checkPointCP.m_vRoadSize.y * multiplyYValue, checkPointCP.m_vRoadSize.x * 2.0f + m_vRoadOutlineSize.x * 2.0f);
