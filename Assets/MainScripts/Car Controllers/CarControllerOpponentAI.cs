@@ -18,12 +18,6 @@ namespace Car
         private float turnBreakVelocityLimit = 0.0f;
         
         [SerializeField]
-        private float sharpTurnBreakVelocityLimit = 0.0f;
-        
-        [SerializeField]
-        private float sharpTurnDetectionRange = 50.0f;
-        
-        [SerializeField]
         LayerMask obstacleLayerMask;
         
         [SerializeField]
@@ -31,9 +25,6 @@ namespace Car
         
         [SerializeField]
         private Vector3 halfExtentsForBreaking;
-        
-        [SerializeField]
-        private float obstacleRangeForBreaking = 0.0f;
         
         [SerializeField]
         private float obstacleHitRange = 2.0f;
@@ -45,18 +36,13 @@ namespace Car
         private Vector3 _dirToTarget;
         private Vector3 originForReversing;
         private Vector3 originForBreaking;
-        private float currentObstacleRangeForBreaking;
+        private float obstacleRangeForBreaking = 20;
+        private float _sharpTurnBreakVelocityLimit = 0.0f;
+        private float _sharpTurnDetectionRange = 50.0f;
 
         private float speed;
         
         bool didHitRailing = false;
-        
-        
-        //Methods
-        private void Start()
-        {
-            currentObstacleRangeForBreaking = obstacleRangeForBreaking;
-        }
 
         protected override void Update()
         {
@@ -104,12 +90,12 @@ namespace Car
             originForReversing = transform.position;
             originForReversing.y += originOffsetForBreaking;
             withinReversingRange = Physics.BoxCast(originForReversing, halfExtentsForBreaking,_dirForward, 
-                out hitInfo, Quaternion.identity, currentObstacleRangeForBreaking, obstacleLayerMask);
+                out hitInfo, Quaternion.identity, obstacleRangeForBreaking, obstacleLayerMask);
 
             bool hitRoad = true;
             for (int i = 1; i < 8; i++)
             {
-                originForBreaking = transform.position + _dirForward * sharpTurnDetectionRange/i;
+                originForBreaking = transform.position + (_dirForward*_sharpTurnDetectionRange)/i;
                 originForBreaking.y += 50;
                 hitRoad = Physics.Raycast(originForBreaking, Vector3.down, out hitInfo, Mathf.Infinity, obstacleLayerMask);
                 if (!hitRoad) break;
@@ -129,7 +115,7 @@ namespace Car
                     && GetVelocity() > turnBreakVelocityLimit)
                     || 
                     (!hitRoad 
-                     && GetVelocity() > sharpTurnBreakVelocityLimit)
+                     && GetVelocity() > _sharpTurnBreakVelocityLimit)
                     )
                 {
                     mthrottleInput = -1f;
@@ -150,7 +136,7 @@ namespace Car
             
             for (int i = 1; i < 8; i++)
             {
-                start = transform.position + _dirForward * sharpTurnDetectionRange/i;
+                start = transform.position + _dirForward * _sharpTurnDetectionRange/i;
                 start.y += 10;
                 end = start + Vector3.down * 100;
 
@@ -166,7 +152,7 @@ namespace Car
             
             
             start = originForReversing;
-            end = start + _dirForward * sharpTurnDetectionRange;
+            end = start + _dirForward * _sharpTurnDetectionRange;
 
             Gizmos.color = Color.blue;
 
@@ -200,6 +186,21 @@ namespace Car
         public void SetTargetPoint(GameObject target)
         {
             targetPoint = target;
+        }
+
+        public void SetObstacleRangeForBreaking(float value)
+        {
+            obstacleRangeForBreaking = value;
+        }
+
+        public void SetSharpTurnBreakVelocityLimit(float value)
+        {
+            _sharpTurnBreakVelocityLimit = value;
+        }
+
+        public void SetSharpTurnDetectionRange(float value)
+        {
+            _sharpTurnDetectionRange = value;
         }
     }
 }

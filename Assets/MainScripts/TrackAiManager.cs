@@ -33,6 +33,8 @@ public class TrackAiManager : MonoBehaviour
 
     private List<float> _targetThresholds = new List<float>();
 
+    private float trackScale;
+
     
     
     //Methods
@@ -53,11 +55,16 @@ public class TrackAiManager : MonoBehaviour
         Tracks track = FindAnyObjectByType<Tracks>();
         _trackBezierCurve = track.gameObject.GetComponent<BezierCurve>();
         if(!_trackBezierCurve) Debug.LogError("TrackAiManager couldnt find a track");
+        
+        //scale
+        trackScale = _trackBezierCurve.gameObject.transform.localScale.x;
 
         //find current track data
         foreach (TrackAiDataEntry trackAiDataEntry in aiTrackData.trackAiData)
         {
-            if (_trackBezierCurve == trackAiDataEntry._track.gameObject.GetComponent<BezierCurve>())
+            IEnumerable<BezierCurve.ControlPoint> pointsA = _trackBezierCurve.Points;
+            IEnumerable<BezierCurve.ControlPoint> pointsB = trackAiDataEntry._track.gameObject.GetComponent<BezierCurve>().Points;
+            if (SameControlPointsByPos(pointsA, pointsB))
             {
                 _currentTrackAiData = trackAiDataEntry;
                 print("FOUND TRACK AI DATA WOHOOOOO");
@@ -79,6 +86,9 @@ public class TrackAiManager : MonoBehaviour
             aiTargets.Add(aiTarget);
             
             _aiCars[i].SetTargetPoint(aiTargets[i]);
+            _aiCars[i].SetObstacleRangeForBreaking(_currentTrackAiData.obstacleRangeForBreaking * trackScale);
+            _aiCars[i].SetSharpTurnDetectionRange(_currentTrackAiData.sharpTurnDetectionRange * trackScale);
+            _aiCars[i].SetSharpTurnBreakVelocityLimit(_currentTrackAiData.sharpTurnBreakVelocityLimit * trackScale);
         }
     }
     
@@ -96,23 +106,25 @@ public class TrackAiManager : MonoBehaviour
         _trackBezierCurve.UpdateDistances();
         float bezierCurveTotalDistance = _trackBezierCurve.TotalDistance;
         if (_distancesAlongCurve[aiNumber] > bezierCurveTotalDistance) _distancesAlongCurve[aiNumber] = 0;
-
+        
         
         //find immediate angle
-        float distanceA = _distancesAlongCurve[aiNumber] - _currentTrackAiData.MinDirectionBuffer;
-        float distanceB = _distancesAlongCurve[aiNumber] + _currentTrackAiData.MaxDirectionBuffer;
+        float distanceA = _distancesAlongCurve[aiNumber] - _currentTrackAiData.MinDirectionBuffer * trackScale;
+        float distanceB = _distancesAlongCurve[aiNumber] + _currentTrackAiData.MaxDirectionBuffer * trackScale;
         if(distanceA > bezierCurveTotalDistance) distanceA = 0;
         if(distanceB > bezierCurveTotalDistance) distanceB = 0;
-        Vector3 dirA = _trackBezierCurve.GetPose(_distancesAlongCurve[aiNumber]).forward;
-        Vector3 dirB = _trackBezierCurve.GetPose(_distancesAlongCurve[aiNumber]).forward;
+        Vector3 dirA = _trackBezierCurve.GetPose(distanceA).forward;
+        Vector3 dirB = _trackBezierCurve.GetPose(distanceB).forward;
         float angle = Vector3.Angle(dirA, dirB);
+        
+        print("ANGLE: " + angle);
         
         
         //set target threshold based on angle
-        if(angle < 30) _targetThresholds[aiNumber] = 50;
-        else if(30 <= angle && angle < 60) _targetThresholds[aiNumber] = 30;
-        else if(60 <= angle && angle < 90) _targetThresholds[aiNumber] = 20;
-        else _targetThresholds[aiNumber] = 15;
+        if(angle < _currentTrackAiData.angle1Max) _targetThresholds[aiNumber] = _currentTrackAiData.angle1AiTargetRadius * trackScale;
+        else if(_currentTrackAiData.angle1Max <= angle && angle < _currentTrackAiData.angle2Max) _targetThresholds[aiNumber] = _currentTrackAiData.angle2AiTargetRadius * trackScale;
+        else if(_currentTrackAiData.angle2Max <= angle && angle < _currentTrackAiData.angle3Max) _targetThresholds[aiNumber] = _currentTrackAiData.angle3AiTargetRadius * trackScale;
+        else _targetThresholds[aiNumber] = _currentTrackAiData.angle4AiTargetRadius * trackScale;
             
         
         //move ai target
@@ -122,7 +134,7 @@ public class TrackAiManager : MonoBehaviour
         
         int numberOfCars = _aiCars.Count;
         
-        Vector3 worldPos = (_trackBezierCurve.GetPose(_distancesAlongCurve[aiNumber]).position + _trackBezierCurve.gameObject.transform.position) * _trackBezierCurve.gameObject.transform.localScale.x;
+        Vector3 worldPos = (_trackBezierCurve.GetPose(_distancesAlongCurve[aiNumber]).position + _trackBezierCurve.gameObject.transform.position) * trackScale;
         Vector3 rightOfWorldPos = (_trackBezierCurve.GetPose(_distancesAlongCurve[aiNumber]).right);
         Vector3 finalWorldPos;
         
@@ -136,5 +148,24 @@ public class TrackAiManager : MonoBehaviour
         float distFromTarget = (worldPos - car.transform.position).magnitude;
         
         if(distFromTarget < _targetThresholds[0]) _distancesAlongCurve[aiNumber] += targetMoveSpeed * Time.deltaTime;
+    }
+    
+    static bool SameControlPointsByPos(IEnumerable<BezierCurve.ControlPoint> inPointsA, IEnumerable<BezierCurve.ControlPoint> inPointsB, float eps = 0.0001f)
+    {
+        var pointsA = inPointsA.ToArray();
+        var pointsB = inPointsB.ToArray();
+        if (pointsA.Length != pointsB.Length) return false;
+
+        float epsSqr = eps * eps;
+
+        for (int i = 0; i < pointsA.Length; i++)
+        {
+            if ((pointsA[i].m_vPosition - pointsB[i].m_vPosition).sqrMagnitude > epsSqr)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
