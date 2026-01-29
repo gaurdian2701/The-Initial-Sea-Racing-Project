@@ -36,8 +36,8 @@ MonoBehaviour:
     angle3Max: 90
     angle3AiTargetRadius: 25
     angle4AiTargetRadius: 15
-    obstacleRangeForBreaking: 10
-    sharpTurnBreakVelocityLimit: 40
+    obstacleRangeForBreaking: 15
+    sharpTurnBreakVelocityLimit: 36
     sharpTurnDetectionRange: 140
   - _track: {fileID: 669322141652963115, guid: 4765a9a5e2da8a24188c28e75fd487c5, type: 3}
     MinDirectionBuffer: 150
@@ -56,12 +56,12 @@ MonoBehaviour:
     MinDirectionBuffer: 150
     MaxDirectionBuffer: 100
     angle1Max: 20
-    angle1AiTargetRadius: 10
+    angle1AiTargetRadius: 35
     angle2Max: 40
-    angle2AiTargetRadius: 10
+    angle2AiTargetRadius: 20
     angle3Max: 60
-    angle3AiTargetRadius: 10
-    angle4AiTargetRadius: 10
-    obstacleRangeForBreaking: 5
-    sharpTurnBreakVelocityLimit: 5
-    sharpTurnDetectionRange: 100
+    angle3AiTargetRadius: 25
+    angle4AiTargetRadius: 15
+    obstacleRangeForBreaking: 15
+    sharpTurnBreakVelocityLimit: 25
+    sharpTurnDetectionRange: 80
