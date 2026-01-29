@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RaceCountDown : MonoBehaviour
@@ -11,11 +12,11 @@ public class RaceCountDown : MonoBehaviour
     private float _timeLeftMusic;
     bool _counting = false;
     bool _countingMusic = false;
-    AudioSource _audioSource;
+    List<AudioSource> _audioSources;
 
     public void StartCountDown()
     {
-        _audioSource = GetComponent<AudioSource>();
+        _audioSources = GetComponents<AudioSource>().ToList();
         _timeLeft  = waitTime;
         _timeLeftMusic = musicWaitTime;
         _counting = true;
@@ -45,7 +46,10 @@ public class RaceCountDown : MonoBehaviour
             if (_timeLeftMusic <= 0)
             {
                 _countingMusic = false;
-                _audioSource.Play();
+                
+                int random = Random.Range(0, _audioSources.Count);
+                print("RANDOM:" + random);
+                _audioSources[random].Play();
             }
         }
     }
