@@ -92,6 +92,7 @@ namespace ProceduralTracks
             {
                 GetComponent<MeshCollider>().sharedMesh = mesh;
             }
+            this.gameObject.layer = LayerMask.NameToLayer("Track");
             return mesh;
         }
 
@@ -168,6 +169,7 @@ namespace ProceduralTracks
             // Use sharedMaterials to avoid material instantiation in edit mode.
             var mrR = railing_R.GetComponent<MeshRenderer>();
             mrR.sharedMaterials = new Material[] { m_mRailingPolesMAT, m_mRailingBarrierMAT };
+            railing_R.layer = LayerMask.NameToLayer("Track");
 
             m_gRailing_R = railing_R;
 
@@ -209,6 +211,7 @@ namespace ProceduralTracks
             // Use sharedMaterials to avoid material instantiation in edit mode.
             var mrL = railing_L.GetComponent<MeshRenderer>();
             mrL.sharedMaterials = new Material[] { m_mRailingPolesMAT, m_mRailingBarrierMAT };
+            railing_L.layer = LayerMask.NameToLayer("Track");
 
             m_gRailing_L = railing_L;
             #endregion
