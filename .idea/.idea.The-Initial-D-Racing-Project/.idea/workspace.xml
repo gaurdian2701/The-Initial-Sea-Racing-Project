@@ -6,14 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9d4c2c55-8d3c-47c6-ae34-123373c26c57" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.The-Initial-D-Racing-Project/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.The-Initial-D-Racing-Project/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MainPrefabs/RoadExamples_Prefabs/Prefab_SimpleRoudAboutRoad.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainPrefabs/RoadExamples_Prefabs/Prefab_SimpleRoudAboutRoad.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MainPrefabs/RoadExamples_Prefabs/Prefab_SliderRoad.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainPrefabs/RoadExamples_Prefabs/Prefab_SliderRoad.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MainPrefabs/RoadExamples_Prefabs/Prefab_UpAndDownRoad.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainPrefabs/RoadExamples_Prefabs/Prefab_UpAndDownRoad.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/Car Controllers/CarControllerOpponentAI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/Car Controllers/CarControllerOpponentAI.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MainScripts/TrackAiManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainScripts/TrackAiManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Mohammed/Mohammed_Scenes/Mohammed_MainScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Mohammed/Mohammed_Scenes/Mohammed_MainScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Mohammed/Mohammed_Scripts/Data_Tracks.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Mohammed/Mohammed_Scripts/Data_Tracks.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Mohammed/Mohammed_Scripts/TrackAiData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Mohammed/Mohammed_Scripts/TrackAiData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/GameScenes/GameScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/GameScenes/GameScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Max/Max_Scripts/RaceCountDown.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Max/Max_Scripts/RaceCountDown.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Examples &amp; Extras/Resources/Fonts &amp; Materials/Bangers SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Examples &amp; Extras/Resources/Fonts &amp; Materials/Bangers SDF.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -125,7 +119,7 @@
       <workItem from="1769519532327" duration="13860000" />
       <workItem from="1769590899320" duration="1000" />
       <workItem from="1769602391692" duration="2957000" />
-      <workItem from="1769676954812" duration="9900000" />
+      <workItem from="1769676954812" duration="10444000" />
     </task>
     <servers />
   </component>
@@ -146,17 +140,17 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/MainScripts/TrackAiManager.cs</url>
-          <line>111</line>
-          <properties documentPath="E:\Repositories\The-Initial-D-Racing-Project\Assets\MainScripts\TrackAiManager.cs" containingFunctionPresentation="Method 'UpdateAiTarget'">
+          <url>file://$PROJECT_DIR$/Assets/Max/Max_Scripts/RaceCountDown.cs</url>
+          <line>49</line>
+          <properties documentPath="E:\Repositories\The-Initial-D-Racing-Project\Assets\Max\Max_Scripts\RaceCountDown.cs" containingFunctionPresentation="Method 'Update'">
             <startOffsets>
-              <option value="3447" />
+              <option value="1342" />
             </startOffsets>
             <endOffsets>
-              <option value="3550" />
+              <option value="1392" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="16" />
+          <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
