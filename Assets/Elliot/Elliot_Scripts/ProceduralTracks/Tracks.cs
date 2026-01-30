@@ -1,13 +1,8 @@
 using Bezier;
 using ExternalForInspector;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using static Bezier.BezierCurve;
-using static UnityEditor.FilePathAttribute;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 namespace ProceduralTracks
 {
